@@ -100,31 +100,30 @@ class SignInViewController: UIViewController {
         firstName.resignFirstResponder()
         secondName.resignFirstResponder()
         email.resignFirstResponder()
+        
+        user.setEmail(email: self.email.text ?? "")
+        user.setUserFirstName(firstName: firstName.text ?? "")
+        user.setLastName(lastName: secondName.text ?? "")
+        
         if textFieldsIsEmpty(){
-            let alert = UIAlertController(title: "Error", message: "Some fields is empty", preferredStyle: .alert)
-            let alertOk = UIAlertAction(title: "Ok", style: .default)
-            alert.addAction(alertOk)
-            self.present(alert, animated: true)
+            errorAlert(title: "Error", message: "Some fields is empty")
             return
         }
-        if !isValidEmail(){
-            let alert = UIAlertController(title: "Error", message: "Email incorrect", preferredStyle: .alert)
-            let alertOk = UIAlertAction(title: "Ok", style: .default)
-            alert.addAction(alertOk)
-            self.present(alert, animated: true)
+        if !user.isValidEmail(){
+            errorAlert(title: "Error", message: "Email incorrect")
             return
         }
-        
-        
+                
         let passwordViewController = storyboard?.instantiateViewController(withIdentifier: "passwordViewController") as! passwordViewController
         
-        passwordViewController.user.setUserFirstName(firstName: firstName.text!)
-        passwordViewController.user.setLastName(lastName: secondName.text!)
-        passwordViewController.user.setEmail(email: email.text!)
+        passwordViewController.user.setUserFirstName(firstName: user.getFirstName() )
+        passwordViewController.user.setLastName(lastName: user.getLastName() )
+        passwordViewController.user.setEmail(email: user.getEmail())
         
         passwordViewController.doAfterBack = {
             self.removeAndShowChild(controller: passwordViewController)
         }
+        
         passwordViewController.doAfterClickLogin = {
             let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             
@@ -137,20 +136,13 @@ class SignInViewController: UIViewController {
             
         }
         
-        passwordViewController.user.isUserExistByEmail { isExist in
+        user.isUserExistByEmail { [self] isExist in
             if isExist{
-                let alert = UIAlertController(title: "Error", message: "Account with this email exist", preferredStyle: .alert)
-                let alertOk = UIAlertAction(title: "Ok", style: .default)
-                alert.addAction(alertOk)
-                self.present(alert, animated: true)
-                
+                errorAlert(title: "Error", message: "Account with this email exist")
             }else{
                 self.addAndShowChild(controller: passwordViewController)
             }
-            
         }
-        
-        
     }
     
     // MARK: - Childs
@@ -171,7 +163,7 @@ class SignInViewController: UIViewController {
     }
     
     
-    // MARK: - google
+    // MARK: - Google
     @objc public func signInViaGoogle(){
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
 
@@ -194,7 +186,6 @@ class SignInViewController: UIViewController {
 
           let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                          accessToken: userGoogle.accessToken.tokenString)
-          // ...
             
             self.user.setEmail(email: userGoogle.profile!.email)
             self.user.setLastName(lastName: userGoogle.profile?.familyName ?? "")
@@ -203,20 +194,24 @@ class SignInViewController: UIViewController {
             
             user.logInViaGoogle { [self] resultLogin, errorlogIn in
                 if error != nil{
-                    print(errorlogIn)
                 }else{
                     user.setUid(uid: (resultLogin?.user.uid)!)
                     user.addUserToDataBase()
                     self.dismiss(animated: true)
-                    print("123")
                 }
             }
             
         }
     }
     
+    // MARK: - Alerts
     
-    
+    fileprivate func errorAlert(title:String,message:String){
+        let alert = UIAlertController(title:title , message: message, preferredStyle: .alert)
+        let actionOk = UIAlertAction(title: "Ok", style: .default)
+        alert.addAction(actionOk)
+        self.present(alert, animated: true)
+    }
     
 }
 
@@ -248,13 +243,6 @@ extension SignInViewController:UITextFieldDelegate{
         }
         return false
     }
-    
-    fileprivate func isValidEmail() -> Bool{
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: email.text)
-    }
-    
+        
 }
 
