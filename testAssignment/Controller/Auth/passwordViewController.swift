@@ -34,6 +34,7 @@ class passwordViewController: UIViewController {
     // MARK: - Configuration
     
     fileprivate func configureViews(){
+        print(123)
         let textFieldCornerRadius = CGFloat(15)
         let signInButtonCornerRadius = CGFloat(15)
         let placeHolderAttrubites = NSAttributedString(
