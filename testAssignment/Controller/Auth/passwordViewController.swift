@@ -10,8 +10,6 @@ import UIKit
 class passwordViewController: UIViewController {
     
     // MARK: - constants
-    
-    let user:User = User()
     var doAfterClickLogin: (()->Void)?
     var doAfterBack: (()->Void)?
     
@@ -64,27 +62,26 @@ class passwordViewController: UIViewController {
     @IBAction func signIn(_ sender: Any) {
         textFieldResign(textFields: [password,passwordTwo])
         
-        user.setPassword(password: password.text ?? "")
+        AppDelegate.user.setPassword(password: password.text ?? "")
         
         if !isValidPassword(){
             errorAlert(title: "Error" , message: "invalid password")
             return
         }
         
-        user.createUserWithEmail { result, error in
+        AppDelegate.user.createUserWithEmail { result, error in
             if (error != nil){
             }else{
-                self.user.logIn { result, error in
+                AppDelegate.user.logIn { result, error in
                     if error != nil{
                     }else{
+                        AppDelegate.user.setCurrentUser()
                         self.dismiss(animated: true)
                     }
                 }
             }
         }
     }
-    
-    
     // MARK: - Navigation
     
     @objc func goToLogin(){

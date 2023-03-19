@@ -26,6 +26,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if user == nil{
                 showSignInPage()
             }
+            else{
+                AppDelegate.user.setCurrentUser()
+            }
             
         }
         

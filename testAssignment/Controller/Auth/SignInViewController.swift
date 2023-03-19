@@ -11,10 +11,7 @@ import FirebaseCore
 import FirebaseAuth
 
 class SignInViewController: UIViewController {
-    
-    
-    let user = User()
-    
+        
     // MARK: - Outlets
     
     @IBOutlet weak var firstName: UITextField!
@@ -93,24 +90,20 @@ class SignInViewController: UIViewController {
         secondName.resignFirstResponder()
         email.resignFirstResponder()
         
-        user.setEmail(email: self.email.text ?? "")
-        user.setUserFirstName(firstName: firstName.text ?? "")
-        user.setLastName(lastName: secondName.text ?? "")
+        AppDelegate.user.setEmail(email: self.email.text ?? "")
+        AppDelegate.user.setUserFirstName(firstName: firstName.text ?? "")
+        AppDelegate.user.setLastName(lastName: secondName.text ?? "")
         
         if textFieldsIsEmpty(){
             errorAlert(title: "Error", message: "Some fields is empty")
             return
         }
-        if !user.isValidEmail(){
+        if !AppDelegate.user.isValidEmail(){
             errorAlert(title: "Error", message: "Email incorrect")
             return
         }
         
         let passwordViewController = storyboard?.instantiateViewController(withIdentifier: "passwordViewController") as! passwordViewController
-        
-        passwordViewController.user.setUserFirstName(firstName: user.getFirstName() )
-        passwordViewController.user.setLastName(lastName: user.getLastName() )
-        passwordViewController.user.setEmail(email: user.getEmail())
         
         passwordViewController.doAfterBack = {
             self.removeAndShowChild(controller: passwordViewController)
@@ -128,7 +121,7 @@ class SignInViewController: UIViewController {
             
         }
         
-        user.isUserExistByEmail { [self] isExist in
+        AppDelegate.user.isUserExistByEmail { [self] isExist in
             if isExist{
                 errorAlert(title: "Error", message: "Account with this email exist")
             }else{
@@ -179,20 +172,19 @@ class SignInViewController: UIViewController {
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                            accessToken: userGoogle.accessToken.tokenString)
             
-            self.user.setEmail(email: userGoogle.profile!.email)
-            self.user.setLastName(lastName: userGoogle.profile?.familyName ?? "")
-            self.user.setUserFirstName(firstName: userGoogle.profile?.givenName ?? "")
-            self.user.setCredential(credential: credential)
+            AppDelegate.user.setEmail(email: userGoogle.profile!.email)
+            AppDelegate.user.setLastName(lastName: userGoogle.profile?.familyName ?? "")
+            AppDelegate.user.setUserFirstName(firstName: userGoogle.profile?.givenName ?? "")
+            AppDelegate.user.setCredential(credential: credential)
             
-            user.logInViaGoogle { [self] resultLogin, errorlogIn in
+            AppDelegate.user.logInViaGoogle { [self] resultLogin, errorlogIn in
                 if error != nil{
                 }else{
-                    user.setUid(uid: (resultLogin?.user.uid)!)
-                    user.addUserToDataBase()
+                    AppDelegate.user.setUid(uid: (resultLogin?.user.uid)!)
+                    AppDelegate.user.setCurrentUser()
                     self.dismiss(animated: true)
                 }
             }
-            
         }
     }
     

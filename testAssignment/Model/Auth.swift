@@ -15,7 +15,7 @@ import FirebaseStorage
 
 class User{
     
-    let storage = Storage.storage()
+    let storage = DatabaseItems()
     
     // MARK: - fields
     
@@ -25,6 +25,7 @@ class User{
     private var password:String?
     private var uid:String?
     private var crenedtial:AuthCredential?
+    private var profilePhoto:UIImage = UIImage(named: "no photo")!
     
     // MARK: - set Methods
     
@@ -46,6 +47,10 @@ class User{
     public func setUid(uid:String){
         self.uid = uid
     }
+    public func setProfilePhoto(image:UIImage){
+        self.profilePhoto = image
+        storage.addPhotoToDatabase(uid: self.getUid(), image: self.getProfilephoto())
+    }
     
     // MARK: - get Methods
     
@@ -58,6 +63,40 @@ class User{
     public func getEmail()->String{
         return self.email ?? ""
     }
+    public func getUid() ->String{
+        return self.uid ?? ""
+    }
+    public func getProfilephoto() ->UIImage{
+        return self.profilePhoto
+    }
+    
+    public func setCurrentUser(){
+        let user = Auth.auth().currentUser
+        self.setUid(uid: user!.uid)
+        
+        storage.getUserFirstNameFromDatabase(uid: self.getUid()) { error, result in
+            if error != nil{
+                print(error)
+            }else{
+                self.setUserFirstName(firstName: result!)
+            }
+        }
+        storage.getUserLastNameFromDatabase(uid: self.getUid()) { error, result in
+            if error != nil{
+                print(error)
+            }else{
+                self.setLastName(lastName: result!)
+            }
+        }
+        storage.getPhotoFromDatabase(uid: self.getUid()) { image, error in
+            if error != nil{
+                print(error)
+            }else{
+                self.profilePhoto = image ?? UIImage(named: "no photo")!
+            }
+        }
+        self.setEmail(email: (user?.email)!)
+    }
     
     
     
@@ -68,7 +107,7 @@ class User{
                 completion(nil, error)
             }else{
                 self.setUid(uid: (result?.user.uid)!)
-                self.addUserToDataBase()
+                self.storage.addUserToDataBase(uid: self.getUid(), firstName: self.getFirstName(), lastName: self.getLastName(), email: self.getEmail())
                 completion(result, nil)
             }
         }
@@ -83,6 +122,7 @@ class User{
                 completion(nil,error)
             }else{
                 completion(result,nil)
+                self.setCurrentUser()
             }
         }
     }
@@ -92,80 +132,96 @@ class User{
                 completion(nil,error)
             }else{
                 completion(result,nil)
+                self.setCurrentUser()
             }
         }
     }
     
-    // MARK: - Database
+    // MARK: - Delete or modify
     
-    public func addUserToDataBase(){
-        let ref = Database.database().reference().child("users")
-        ref.child(self.uid!).updateChildValues([
-            "firstname":self.firstName!,
-            "lastname":lastName!,
-            "email":self.email!
-        ])
+    public func deletePhoto(){
+        storage.deletePhotoFromStorage(uid: self.getUid())
+        self.setProfilePhoto(image: UIImage(named: "no photo")!)
     }
-    public func addPhotoToDatabase(image:UIImage){
-        let ref = storage.reference().child(self.uid!)
-        let uploadData = image.pngData()
-        ref.putData(uploadData!) { result, error in
-            if error != nil{
-                print(error)
-            }else{
-                print("success")
-            }
-        }
-    }
-    public func getPhotoFromDatabase(completion:@escaping ((UIImage?,Error?)->Void)){
-        let ref = storage.reference().child(self.uid!)
-        ref.getData(maxSize: Int64.max) { data, error in
-            if error != nil{
-                print(error)
-                completion(nil,error)
-            }
-            else{
-                completion(UIImage(data: data!),nil)
-            }
-        }
-    }
+    
+//     MARK: - Database
+    
+//    public func addUserToDataBase(){
+//        let ref = Database.database().reference().child("users")
+//        ref.child(self.uid!).updateChildValues([
+//            "firstname":self.firstName!,
+//            "lastname":lastName!,
+//            "email":self.email!
+//        ])
+//    }
+//    public func addPhotoToDatabase(image:UIImage){
+//        let ref = storage.reference().child(self.uid!)
+//        let uploadData = image.pngData()
+//        ref.putData(uploadData!) { result, error in
+//            if error != nil{
+//                print(error)
+//            }else{
+//                print("success")
+//            }
+//        }
+//    }
+//    public func getPhotoFromDatabase(completion:@escaping ((UIImage?,Error?)->Void)){
+//        let ref = storage.reference().child(self.uid!)
+//        ref.getData(maxSize: Int64.max) { data, error in
+//            if error != nil{
+//                print(error)
+//                completion(nil,error)
+//            }
+//            else{
+//                completion(UIImage(data: data!),nil)
+//            }
+//        }
+//    }
+//    public func deletePhotoFromStorage(){
+//        let ref = storage.reference().child(self.uid!)
+//        ref.delete { error in
+//            if error != nil{
+//                print(error)
+//            }
+//        }
+//    }
     
     // MARK: - getting From Database
     
-    public func getUserFirstNameFromDatabase(completion: @escaping ((Error?,String?)->Void)){
-        let user = Auth.auth().currentUser
-        self.setUid(uid: user!.uid)
-        let ref = Database.database().reference().child("users")
-        
-        let databaseUser = ref.child(user!.uid)
-        databaseUser.child("firstname").getData { error, dataSnapshot in
-            if error != nil{
-                completion(error,nil)
-                
-            }else{
-                self.firstName = dataSnapshot?.value as? String ?? "Unknown"
-                completion(nil,self.firstName)
-            }
-            
-        }
-
-    }
-    
-    public func getUserLastNameFromDatabase(completion: @escaping ((Error?,String?)->Void)){
-        let user = Auth.auth().currentUser
-        let ref = Database.database().reference().child("users")
-        
-        let databaseUser = ref.child(user!.uid)
-        databaseUser.child("lastname").getData { error, dataSnapshot in
-            if error != nil{
-                completion(error,nil)
-            }else{
-                self.lastName = dataSnapshot?.value as? String ?? "Unknown"
-                completion(nil,self.lastName)
-            }
-           
-        }
-    }
+//    public func getUserFirstNameFromDatabase(completion: @escaping ((Error?,String?)->Void)){
+//        let user = Auth.auth().currentUser
+//        self.setUid(uid: user!.uid)
+//        let ref = Database.database().reference().child("users")
+//        
+//        let databaseUser = ref.child(user!.uid)
+//        databaseUser.child("firstname").getData { error, dataSnapshot in
+//            if error != nil{
+//                completion(error,nil)
+//                
+//            }else{
+//                self.firstName = dataSnapshot?.value as? String ?? "Unknown"
+//                completion(nil,self.firstName)
+//            }
+//            
+//        }
+//
+//    }
+//    
+//    public func getUserLastNameFromDatabase(completion: @escaping ((Error?,String?)->Void)){
+//        let user = Auth.auth().currentUser
+//        let ref = Database.database().reference().child("users")
+//        
+//        let databaseUser = ref.child(user!.uid)
+//        databaseUser.child("lastname").getData { error, dataSnapshot in
+//            if error != nil{
+//                completion(error,nil)
+//            }else{
+//                self.lastName = dataSnapshot?.value as? String ?? "Unknown"
+//                completion(nil,self.lastName)
+//            }
+//           
+//        }
+//    }
     
     
     

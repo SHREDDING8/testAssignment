@@ -11,7 +11,6 @@ class LoginViewController: UIViewController {
     
     // MARK: - My variables
     var isHidePassword = true
-    let user = User()
     var doAferClickSignIn:(()->Void)?
     
     
@@ -60,13 +59,13 @@ class LoginViewController: UIViewController {
     // MARK: - Configuration
     fileprivate func configureViews(){
         let cornerRadius = 15.0
-        view.addSubview(eyeImageView)
-        view.addSubview(lineimageView)
+        eyeGlobalView.addSubview(eyeImageView)
+        eyeGlobalView.addSubview(lineimageView)
         
         setCornerRadius(views: [email,password,logInButton], cornerRadius: cornerRadius)
         setPlaceholder(textFields: [email,password], placeholders: ["Email","Password"])
         
-        password.rightView = view
+        password.rightView = eyeGlobalView
         password.rightViewMode = .always
         
         let gestureEye = UITapGestureRecognizer(target: self, action: #selector(showHidePassword))
@@ -98,13 +97,14 @@ class LoginViewController: UIViewController {
     @IBAction func logIn(_ sender: Any) {
         textFieldResign(textFields: [email,password])
         
-        user.setEmail(email: email.text ?? "")
-        user.setPassword(password: password.text ?? "")
+        AppDelegate.user.setEmail(email: email.text ?? "")
+        AppDelegate.user.setPassword(password: password.text ?? "")
         
-        user.logIn { result, error in
+        AppDelegate.user.logIn { result, error in
             if error != nil{
                 self.errorAlert(title: "Error", message: "Wrong Email or password")
             }else{
+                AppDelegate.user.setCurrentUser()
                 self.dismiss(animated: true)
             }
         }

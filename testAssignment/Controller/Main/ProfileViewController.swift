@@ -10,8 +10,6 @@ import FirebaseCore
 import FirebaseAuth
 
 class ProfileViewController: UIViewController {
-    let user = User()
-    
     
     // MARK: - variables
     
@@ -53,16 +51,7 @@ class ProfileViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    
-    func signOut() {
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
-        }
-    }
-    
+        
     
     // MARK: - Configuration
     fileprivate func configureViews(){
@@ -90,35 +79,40 @@ class ProfileViewController: UIViewController {
     
     
     fileprivate func configureName(){
-        user.getUserFirstNameFromDatabase(completion: { error, firstName in
-            if error != nil{
-                self.name.text = ""
-            }else{
-                self.name.text = firstName! + " "
-            }
-        })
+        self.name.text = AppDelegate.user.getFirstName() + " " + AppDelegate.user.getLastName()
         
-        user.getUserLastNameFromDatabase { error, lastName in
-            if error != nil{
-                self.name.text! += ""
-            }else{
-                self.name.text! += lastName!
-            }
-
-        }
-        user.getPhotoFromDatabase { image, error in
-            if error != nil{
-            }else{
-                self.profilePhoto.image = image
-            }
-            self.loadPage.isHidden = true
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-            UIView.transition(with: self.loadPage, duration: 0.3,options: .transitionCrossDissolve) {
-                self.loadPage.layer.opacity = 0
-                
-            }
-        }
+//        user.getUserFirstNameFromDatabase(completion: { error, firstName in
+//            if error != nil{
+//                self.name.text = ""
+//            }else{
+//                self.name.text = firstName! + " "
+//            }
+//        })
+//
+//        user.getUserLastNameFromDatabase { error, lastName in
+//            if error != nil{
+//                self.name.text! += ""
+//            }else{
+//                self.name.text! += lastName!
+//            }
+//
+//        }
+        
+        self.profilePhoto.image = AppDelegate.user.getProfilephoto()
+        
+//        user.getPhotoFromDatabase { image, error in
+//            if error != nil{
+//            }else{
+//                self.profilePhoto.image = image
+//            }
+//            self.loadPage.isHidden = true
+//            self.activityIndicator.stopAnimating()
+//            self.activityIndicator.isHidden = true
+//            UIView.transition(with: self.loadPage, duration: 0.3,options: .transitionCrossDissolve) {
+//                self.loadPage.layer.opacity = 0
+//            }
+//        }
+        
     }
     
     fileprivate func setCornerRadius(views:[UIView],cornerRadius:Double){
@@ -139,13 +133,27 @@ class ProfileViewController: UIViewController {
        let actionCamera = UIAlertAction(title: "Camera", style: .default) { [self] _ in
            imagePicker.sourceType = .camera
            self.present(imagePicker, animated: true)
-           
+       }
+       let actionDeletePhoto = UIAlertAction(title: "Delete Photo", style: .default) { [self] _ in
+           self.profilePhoto.image = UIImage(named: "no photo")
+           AppDelegate.user.deletePhoto()
        }
        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel)
        alert.addAction(actionLibary)
        alert.addAction(actionCamera)
        alert.addAction(actionCancel)
+       alert.addAction(actionDeletePhoto)
        self.present(alert, animated: true)
+    }
+    
+    func signOut() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            self.tabBarController?.selectedIndex = 0
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
     }
     
     
@@ -202,7 +210,7 @@ extension ProfileViewController:UIImagePickerControllerDelegate,UINavigationCont
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.editedImage] as? UIImage{
             self.profilePhoto.image = image
-            user.addPhotoToDatabase(image: self.profilePhoto.image!)
+            AppDelegate.user.setProfilePhoto(image: self.profilePhoto.image! )
         }
         self.dismiss(animated: true)
     }
