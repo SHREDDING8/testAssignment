@@ -393,6 +393,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <outlet property="tabBar" destination="8rL-n2-DQx" id="sKu-s3-dGg"/>
@@ -421,21 +422,11 @@
                                 <color key="textColor" red="0.086274509799999996" green="0.094117647060000004" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eb6-8P-zHj">
-                                <rect key="frame" x="164.66666666666666" y="430.66666666666669" width="85" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Log Out"/>
-                                <connections>
-                                    <action selector="signOut:" destination="9c4-4o-EeY" eventType="touchUpInside" id="MAy-fm-tBG"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="5Eu-fO-LFd"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="eb6-8P-zHj" firstAttribute="centerY" secondItem="4Hb-RE-0bA" secondAttribute="centerY" id="UY7-iN-Kig"/>
                             <constraint firstItem="G3g-q9-D9j" firstAttribute="top" secondItem="5Eu-fO-LFd" secondAttribute="top" constant="200" id="c0K-2s-Y64"/>
-                            <constraint firstItem="eb6-8P-zHj" firstAttribute="centerX" secondItem="4Hb-RE-0bA" secondAttribute="centerX" id="hQG-bp-MTM"/>
                             <constraint firstItem="G3g-q9-D9j" firstAttribute="centerX" secondItem="4Hb-RE-0bA" secondAttribute="centerX" id="qgF-Y2-0a4"/>
                         </constraints>
                     </view>
@@ -459,25 +450,16 @@
                                 <color key="textColor" red="0.086274509799999996" green="0.094117647060000004" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nlQ-53-cAL">
-                                <rect key="frame" x="164.66666666666666" y="430.66666666666669" width="85" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Log Out"/>
-                                <connections>
-                                    <action selector="signOut:" destination="AW6-Ax-spq" eventType="touchUpInside" id="hmk-Xs-KX1"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="7XG-wC-ZVy"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="nlQ-53-cAL" firstAttribute="centerX" secondItem="fIU-As-dmp" secondAttribute="centerX" id="DvC-ve-vZC"/>
                             <constraint firstItem="6st-qm-6d4" firstAttribute="top" secondItem="7XG-wC-ZVy" secondAttribute="top" constant="200" id="MUb-6L-6si"/>
-                            <constraint firstItem="nlQ-53-cAL" firstAttribute="centerY" secondItem="fIU-As-dmp" secondAttribute="centerY" id="WbZ-fF-Aum"/>
                             <constraint firstItem="6st-qm-6d4" firstAttribute="centerX" secondItem="fIU-As-dmp" secondAttribute="centerX" id="Y4q-Af-F3j"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="page 4" id="Cd3-oy-sSd">
+                        <color key="badgeColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
                     </tabBarItem>
                 </viewController>
@@ -499,25 +481,17 @@
                                 <color key="textColor" red="0.086274509799999996" green="0.094117647060000004" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="swQ-Gw-8s9">
-                                <rect key="frame" x="164.66666666666666" y="430.66666666666669" width="85" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Log Out"/>
-                                <connections>
-                                    <action selector="signOut:" destination="7Ad-g4-I2w" eventType="touchUpInside" id="NSV-TJ-XMW"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tZD-Ru-WRC"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="swQ-Gw-8s9" firstAttribute="centerY" secondItem="eQE-JE-cEY" secondAttribute="centerY" id="5gR-eZ-ji7"/>
                             <constraint firstItem="Tj8-jb-hdo" firstAttribute="centerX" secondItem="eQE-JE-cEY" secondAttribute="centerX" id="MGe-ab-Eqf"/>
                             <constraint firstItem="Tj8-jb-hdo" firstAttribute="top" secondItem="tZD-Ru-WRC" secondAttribute="top" constant="200" id="SwZ-jc-1pc"/>
-                            <constraint firstItem="swQ-Gw-8s9" firstAttribute="centerX" secondItem="eQE-JE-cEY" secondAttribute="centerX" id="tY7-2h-ejh"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="page 3" id="orh-uF-u4w"/>
+                    <tabBarItem key="tabBarItem" title="" image="page 3" id="orh-uF-u4w">
+                        <color key="badgeColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBarItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ipd-wR-1dm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -537,20 +511,10 @@
                                 <color key="textColor" red="0.086274509799999996" green="0.094117647060000004" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c1A-Mg-fOt">
-                                <rect key="frame" x="164.66666666666666" y="430.66666666666669" width="85" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Log Out"/>
-                                <connections>
-                                    <action selector="signOut:" destination="pnw-eT-SEz" eventType="touchUpInside" id="l7D-a5-FY7"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="MzI-hF-hX3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="c1A-Mg-fOt" firstAttribute="centerX" secondItem="wXm-GL-Kan" secondAttribute="centerX" id="6Ud-jv-ewT"/>
-                            <constraint firstItem="c1A-Mg-fOt" firstAttribute="centerY" secondItem="wXm-GL-Kan" secondAttribute="centerY" id="F0c-Aa-GWn"/>
                             <constraint firstItem="JbK-1K-OMq" firstAttribute="centerX" secondItem="wXm-GL-Kan" secondAttribute="centerX" id="lGu-FG-c9x"/>
                             <constraint firstItem="JbK-1K-OMq" firstAttribute="top" secondItem="MzI-hF-hX3" secondAttribute="top" constant="200" id="x4e-xu-sYo"/>
                         </constraints>
@@ -688,8 +652,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DMb-YF-Z2d">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="fbg-GD-cFS">
-                                        <rect key="frame" x="197" y="396.66666666666669" width="20" height="20"/>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="fbg-GD-cFS">
+                                        <rect key="frame" x="188.66666666666666" y="388" width="37" height="37"/>
+                                        <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" name="backGround"/>
@@ -723,11 +688,15 @@
                             <constraint firstItem="JXD-Eb-JRR" firstAttribute="leading" secondItem="WT0-dY-buk" secondAttribute="leading" constant="20" id="yJW-6Q-xod"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="page 5" id="Rbs-zD-ynF"/>
+                    <tabBarItem key="tabBarItem" title="" image="page 5" id="Rbs-zD-ynF">
+                        <color key="badgeColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBarItem>
                     <connections>
                         <outlet property="activityIndicator" destination="fbg-GD-cFS" id="FaD-hx-wQv"/>
+                        <outlet property="changePhotoButton" destination="uiy-ZT-Lf1" id="fHW-1X-94Z"/>
                         <outlet property="loadPage" destination="DMb-YF-Z2d" id="J07-JN-JQp"/>
                         <outlet property="name" destination="JXD-Eb-JRR" id="hMK-YD-Jog"/>
+                        <outlet property="profilePhoto" destination="c1H-I5-dcY" id="ngu-Y1-RUR"/>
                         <outlet property="tableViewProfile" destination="XLI-h6-goA" id="KtP-Bt-9Zd"/>
                         <outlet property="uploadButton" destination="xaT-DO-bPr" id="smM-hM-QBu"/>
                     </connections>

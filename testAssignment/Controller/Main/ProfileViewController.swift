@@ -22,23 +22,33 @@ class ProfileViewController: UIViewController {
     // MARK: - outlets
     @IBOutlet weak var tableViewProfile: UITableView!
     
+    @IBOutlet weak var profilePhoto: UIImageView!
     @IBOutlet weak var uploadButton: UIView!
     
     @IBOutlet weak var name: UILabel!
     
     @IBOutlet weak var loadPage: UIView!
     
+    @IBOutlet weak var changePhotoButton: UILabel!
+    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    let imagePicker:UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.allowsEditing = true
+        return picker
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
             self.activityIndicator.startAnimating()
-            self.configureName()        }
+            self.configureName()
+        }
         
+        configureViews()
         configureTableView()
         configureButtonUpload()
-        
-        
         
         // Do any additional setup after loading the view.
     }
@@ -55,6 +65,19 @@ class ProfileViewController: UIViewController {
     
     
     // MARK: - Configuration
+    fileprivate func configureViews(){
+        imagePicker.delegate = self
+        
+        self.changePhotoButton.isUserInteractionEnabled = true
+        self.profilePhoto.isUserInteractionEnabled = true
+        let gestureChangePhoto = UITapGestureRecognizer(target: self, action: #selector(tapChangePhoto))
+        changePhotoButton.addGestureRecognizer(gestureChangePhoto)
+        self.profilePhoto.addGestureRecognizer(gestureChangePhoto)
+        
+        setCornerRadius(views: [profilePhoto], cornerRadius: 30.0)
+        
+    
+    }
     
     fileprivate func configureTableView(){
         tableViewProfile.showsVerticalScrollIndicator = false
@@ -69,7 +92,6 @@ class ProfileViewController: UIViewController {
     fileprivate func configureName(){
         user.getUserFirstNameFromDatabase(completion: { error, firstName in
             if error != nil{
-                print(error)
                 self.name.text = ""
             }else{
                 self.name.text = firstName! + " "
@@ -78,7 +100,6 @@ class ProfileViewController: UIViewController {
         
         user.getUserLastNameFromDatabase { error, lastName in
             if error != nil{
-                print(error)
                 self.name.text! += ""
             }else{
                 self.name.text! += lastName!
@@ -94,17 +115,35 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    fileprivate func setCornerRadius(views:[UIView],cornerRadius:Double){
+        for view in views{
+            view.layer.masksToBounds = true
+            view.layer.cornerRadius = CGFloat(cornerRadius)
+        }
+    }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    // MARK: - Actions
     
+   @objc fileprivate func tapChangePhoto(){
+       let alert = UIAlertController(title: "Change photo", message: "Select how you want to upload photo", preferredStyle: .actionSheet)
+       let actionLibary = UIAlertAction(title: "Library", style: .default) { [self] _ in
+           imagePicker.sourceType = .photoLibrary
+           self.present(imagePicker, animated: true)
+       }
+       let actionCamera = UIAlertAction(title: "Camera", style: .default) { [self] _ in
+           imagePicker.sourceType = .camera
+           self.present(imagePicker, animated: true)
+           
+       }
+       let actionCancel = UIAlertAction(title: "Cancel", style: .cancel)
+       alert.addAction(actionLibary)
+       alert.addAction(actionCamera)
+       alert.addAction(actionCancel)
+       self.present(alert, animated: true)
+    }
+    
+    
+    // MARK: - tableView Delegate
 }
 
 extension ProfileViewController:UITableViewDelegate,UITableViewDataSource{
@@ -150,6 +189,17 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource{
             break
         }
     }
-    
-    
+}
+
+// MARK: - UiImagePicker Delegate
+extension ProfileViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.editedImage] as? UIImage{
+            self.profilePhoto.image = image
+        }
+        self.dismiss(animated: true)
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true)
+    }
 }
