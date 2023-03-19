@@ -34,58 +34,49 @@ class passwordViewController: UIViewController {
     // MARK: - Configuration
     
     fileprivate func configureViews(){
-        print(123)
-        let textFieldCornerRadius = CGFloat(15)
-        let signInButtonCornerRadius = CGFloat(15)
-        let placeHolderAttrubites = NSAttributedString(
-            string: "placeholder", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Placeholder")!])
+        let cornerRadius = 15.0
         
-        password.layer.masksToBounds = true
-        passwordTwo.layer.masksToBounds = true
-        signIn.layer.masksToBounds = true
+        setCornerRadius(views: [password,passwordTwo,signIn], cornerRadius: cornerRadius)
         
-        password.layer.cornerRadius = textFieldCornerRadius
-        passwordTwo.layer.cornerRadius = textFieldCornerRadius
-        signIn.layer.cornerRadius = signInButtonCornerRadius
-        
-        password.attributedPlaceholder = placeHolderAttrubites
-        passwordTwo.attributedPlaceholder = placeHolderAttrubites
-        
-        password.placeholder = "Enter password"
-        passwordTwo.placeholder = "Repeat password"
-        
-        password.delegate = self
-        passwordTwo.delegate = self
+        setPlaceholder(textFields: [password,passwordTwo], placeholders: ["Enter password","Repeat password"])
         
         logIn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToLogin)))
     }
-
+    
+    fileprivate func setCornerRadius(views:[UIView],cornerRadius:Double){
+        for view in views{
+            view.layer.masksToBounds = true
+            view.layer.cornerRadius = CGFloat(cornerRadius)
+        }
+    }
+    fileprivate func setPlaceholder(textFields:[UITextField],placeholders:[String]){
+        let placeHolderAttrubites = NSAttributedString(
+            string: "placeholder", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Placeholder")!])
+        for index in 0..<textFields.count{
+            textFields[index].attributedPlaceholder = placeHolderAttrubites
+            textFields[index].placeholder = placeholders[index]
+        }
+    }
+    
     
     // MARK: - Sign In
     
     @IBAction func signIn(_ sender: Any) {
-        password.resignFirstResponder()
-        passwordTwo.resignFirstResponder()
+        textFieldResign(textFields: [password,passwordTwo])
+        
+        user.setPassword(password: password.text ?? "")
         
         if !isValidPassword(){
-            let alert = UIAlertController(title: "Error", message: "invalid password", preferredStyle: .alert)
-            let alertOk = UIAlertAction(title: "Ok", style: .default)
-            alert.addAction(alertOk)
-            self.present(alert, animated: true)
+            errorAlert(title: "Error" , message: "invalid password")
             return
         }
-        user.setPassword(password: password.text!)
         
         user.createUserWithEmail { result, error in
             if (error != nil){
-                print(error!)
             }else{
-                print(result?.user.uid ?? "")
                 self.user.logIn { result, error in
                     if error != nil{
-                        print(error)
                     }else{
-                        print(result?.user.email)
                         self.dismiss(animated: true)
                     }
                 }
@@ -101,8 +92,8 @@ class passwordViewController: UIViewController {
             self.doAfterClickLogin?()
         }
     }
-
-
+    
+    
     @IBAction func backTransition(_ sender: Any) {
         UIView.transition(with: self.view, duration: 0.5,options: .transitionCrossDissolve) {
             self.doAfterBack?()
@@ -110,6 +101,15 @@ class passwordViewController: UIViewController {
         
     }
     
+    
+    // MARK: - Alerts
+    
+    fileprivate func errorAlert(title:String,message:String){
+        let alert = UIAlertController(title:title , message: message, preferredStyle: .alert)
+        let actionOk = UIAlertAction(title: "Ok", style: .default)
+        alert.addAction(actionOk)
+        self.present(alert, animated: true)
+    }
     
 }
 
@@ -123,6 +123,11 @@ extension passwordViewController:UITextFieldDelegate{
             textField.resignFirstResponder()
         }
         return true
+    }
+    fileprivate func textFieldResign(textFields:[UITextField]){
+        for textField in textFields{
+            textField.resignFirstResponder()
+        }
     }
     
     

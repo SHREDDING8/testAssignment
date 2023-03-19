@@ -15,8 +15,8 @@ class User{
     
     // MARK: - fields
     
-    private var userFirstName:String?
-    private var userLastName:String?
+    private var firstName:String?
+    private var lastName:String?
     private var email:String?
     private var password:String?
     private var uid:String?
@@ -25,10 +25,10 @@ class User{
     // MARK: - set Methods
     
     public func setUserFirstName(firstName:String){
-        self.userFirstName = firstName
+        self.firstName = firstName
     }
     public func setLastName(lastName:String){
-        self.userLastName = lastName
+        self.lastName = lastName
     }
     public func setEmail(email:String){
         self.email = email
@@ -46,10 +46,10 @@ class User{
     // MARK: - get Methods
     
     public func getFirstName()->String{
-        return self.userFirstName ?? ""
+        return self.firstName ?? ""
     }
     public func getLastName()->String{
-        return self.userLastName ?? ""
+        return self.lastName ?? ""
     }
     public func getEmail()->String{
         return self.email ?? ""
@@ -97,8 +97,8 @@ class User{
     public func addUserToDataBase(){
         let ref = Database.database().reference().child("users")
         ref.child(self.uid!).updateChildValues([
-            "firstname":self.userFirstName!,
-            "lastname":userLastName!,
+            "firstname":self.firstName!,
+            "lastname":lastName!,
             "email":self.email!
         ])
     }
@@ -115,8 +115,8 @@ class User{
                 completion(error,nil)
                 
             }else{
-                self.userFirstName = dataSnapshot?.value as? String ?? "Unknown"
-                completion(nil,self.userFirstName)
+                self.firstName = dataSnapshot?.value as? String ?? "Unknown"
+                completion(nil,self.firstName)
             }
             
         }
@@ -132,8 +132,8 @@ class User{
             if error != nil{
                 completion(error,nil)
             }else{
-                self.userLastName = dataSnapshot?.value as? String ?? "Unknown"
-                completion(nil,self.userLastName)
+                self.lastName = dataSnapshot?.value as? String ?? "Unknown"
+                completion(nil,self.lastName)
             }
            
         }

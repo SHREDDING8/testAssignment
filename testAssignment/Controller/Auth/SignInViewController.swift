@@ -45,33 +45,9 @@ class SignInViewController: UIViewController {
     // MARK: - Configuration
     
     fileprivate func configureViews(){
-        let textFieldCornerRadius = CGFloat(15)
-        let signInButtonCornerRadius = CGFloat(15)
-        let placeHolderAttrubites = NSAttributedString(
-            string: "placeholder", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Placeholder")!])
-        
-        firstName.layer.masksToBounds = true
-        secondName.layer.masksToBounds = true
-        email.layer.masksToBounds = true
-        signInButton.layer.masksToBounds = true
-        
-        
-        
-        firstName.layer.cornerRadius = textFieldCornerRadius
-        secondName.layer.cornerRadius = textFieldCornerRadius
-        email.layer.cornerRadius = textFieldCornerRadius
-        signInButton.layer.cornerRadius = signInButtonCornerRadius
-        
-        firstName.attributedPlaceholder = placeHolderAttrubites
-        secondName.attributedPlaceholder = placeHolderAttrubites
-        email.attributedPlaceholder = placeHolderAttrubites
-        firstName.placeholder = "First name"
-        secondName.placeholder = "Last name"
-        email.placeholder = "Email"
-        
-        firstName.delegate = self
-        secondName.delegate = self
-        email.delegate = self
+        let cornerRadius = 15.0
+        setCornerRadius(views: [firstName,secondName,email,signInButton], cornerRadius: cornerRadius)
+        setPlaceholder(textFields: [firstName,secondName,email], placeholders: ["First name","Last name","Email"])
         
         
         let signInViaGoogleGesture = UITapGestureRecognizer(target: self, action: #selector(signInViaGoogle))
@@ -82,6 +58,22 @@ class SignInViewController: UIViewController {
         
         logIn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToLogin)))
         
+    }
+    
+    fileprivate func setCornerRadius(views:[UIView],cornerRadius:Double){
+        for view in views{
+            view.layer.masksToBounds = true
+            view.layer.cornerRadius = CGFloat(cornerRadius)
+        }
+    }
+    
+    fileprivate func setPlaceholder(textFields:[UITextField],placeholders:[String]){
+        let placeHolderAttrubites = NSAttributedString(
+            string: "placeholder", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Placeholder")!])
+        for index in 0..<textFields.count{
+            textFields[index].attributedPlaceholder = placeHolderAttrubites
+            textFields[index].placeholder = placeholders[index]
+        }
     }
     
     // MARK: - Navigation
@@ -113,7 +105,7 @@ class SignInViewController: UIViewController {
             errorAlert(title: "Error", message: "Email incorrect")
             return
         }
-                
+        
         let passwordViewController = storyboard?.instantiateViewController(withIdentifier: "passwordViewController") as! passwordViewController
         
         passwordViewController.user.setUserFirstName(firstName: user.getFirstName() )
@@ -166,26 +158,26 @@ class SignInViewController: UIViewController {
     // MARK: - Google
     @objc public func signInViaGoogle(){
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-
+        
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
-
+        
         // Start the sign in flow!
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [self] result, error in
-          
+            
             guard error == nil else {
-            return
-          }
-
-          guard let userGoogle = result?.user,
-            let idToken = userGoogle.idToken?.tokenString
-          else {
-            return
-          }
-
-          let credential = GoogleAuthProvider.credential(withIDToken: idToken,
-                                                         accessToken: userGoogle.accessToken.tokenString)
+                return
+            }
+            
+            guard let userGoogle = result?.user,
+                  let idToken = userGoogle.idToken?.tokenString
+            else {
+                return
+            }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: userGoogle.accessToken.tokenString)
             
             self.user.setEmail(email: userGoogle.profile!.email)
             self.user.setLastName(lastName: userGoogle.profile?.familyName ?? "")
@@ -243,6 +235,6 @@ extension SignInViewController:UITextFieldDelegate{
         }
         return false
     }
-        
+    
 }
 
