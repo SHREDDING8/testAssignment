@@ -208,6 +208,7 @@ class SignInViewController: UIViewController {
                     user.setUid(uid: (resultLogin?.user.uid)!)
                     user.addUserToDataBase()
                     self.dismiss(animated: true)
+                    print("123")
                 }
             }
             

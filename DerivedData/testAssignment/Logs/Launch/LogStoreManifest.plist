@@ -5,6 +5,52 @@
 	<key>logFormatVersion</key>
 	<integer>10</integer>
 	<key>logs</key>
-	<dict/>
+	<dict>
+		<key>6B90FD42-32C1-43D5-8008-2078C99B0238</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>88A82964-AEDD-4C36-9241-17FADFEB14D6</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-testAssignment-2023.03.19_16-12-49-+0300.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>testAssignment project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>testAssignment</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run testAssignment</string>
+			<key>timeStartedRecording</key>
+			<real>700924369.00153196</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run testAssignment</string>
+			<key>uniqueIdentifier</key>
+			<string>6B90FD42-32C1-43D5-8008-2078C99B0238</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
