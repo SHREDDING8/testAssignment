@@ -104,14 +104,20 @@ class ProfileViewController: UIViewController {
             }else{
                 self.name.text! += lastName!
             }
+
+        }
+        user.getPhotoFromDatabase { image, error in
+            if error != nil{
+            }else{
+                self.profilePhoto.image = image
+            }
+            self.loadPage.isHidden = true
             self.activityIndicator.stopAnimating()
             self.activityIndicator.isHidden = true
             UIView.transition(with: self.loadPage, duration: 0.3,options: .transitionCrossDissolve) {
                 self.loadPage.layer.opacity = 0
                 
             }
-            self.loadPage.isHidden = true
-            
         }
     }
     
@@ -196,6 +202,7 @@ extension ProfileViewController:UIImagePickerControllerDelegate,UINavigationCont
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.editedImage] as? UIImage{
             self.profilePhoto.image = image
+            user.addPhotoToDatabase(image: self.profilePhoto.image!)
         }
         self.dismiss(animated: true)
     }

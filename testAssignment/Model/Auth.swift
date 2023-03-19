@@ -6,12 +6,16 @@
 //
 
 import Foundation
+import UIKit
 import FirebaseCore
 import FirebaseAuth
 import FirebaseDatabase
 import GoogleSignIn
+import FirebaseStorage
 
 class User{
+    
+    let storage = Storage.storage()
     
     // MARK: - fields
     
@@ -102,11 +106,35 @@ class User{
             "email":self.email!
         ])
     }
+    public func addPhotoToDatabase(image:UIImage){
+        let ref = storage.reference().child(self.uid!)
+        let uploadData = image.pngData()
+        ref.putData(uploadData!) { result, error in
+            if error != nil{
+                print(error)
+            }else{
+                print("success")
+            }
+        }
+    }
+    public func getPhotoFromDatabase(completion:@escaping ((UIImage?,Error?)->Void)){
+        let ref = storage.reference().child(self.uid!)
+        ref.getData(maxSize: Int64.max) { data, error in
+            if error != nil{
+                print(error)
+                completion(nil,error)
+            }
+            else{
+                completion(UIImage(data: data!),nil)
+            }
+        }
+    }
     
     // MARK: - getting From Database
     
     public func getUserFirstNameFromDatabase(completion: @escaping ((Error?,String?)->Void)){
         let user = Auth.auth().currentUser
+        self.setUid(uid: user!.uid)
         let ref = Database.database().reference().child("users")
         
         let databaseUser = ref.child(user!.uid)
