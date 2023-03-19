@@ -67,7 +67,7 @@ class ProfileViewController: UIViewController {
     
     
     fileprivate func configureName(){
-        user.getUserFirstName(completion: { error, firstName in
+        user.getUserFirstNameFromDatabase(completion: { error, firstName in
             if error != nil{
                 print(error)
                 self.name.text = ""
@@ -76,7 +76,7 @@ class ProfileViewController: UIViewController {
             }
         })
         
-        user.getUserLastName { error, lastName in
+        user.getUserLastNameFromDatabase { error, lastName in
             if error != nil{
                 print(error)
                 self.name.text! += ""

@@ -13,12 +13,16 @@ import GoogleSignIn
 
 class User{
     
+    // MARK: - fields
+    
     private var userFirstName:String?
     private var userLastName:String?
     private var email:String?
     private var password:String?
     private var uid:String?
     private var crenedtial:AuthCredential?
+    
+    // MARK: - set Methods
     
     public func setUserFirstName(firstName:String){
         self.userFirstName = firstName
@@ -38,6 +42,9 @@ class User{
     public func setUid(uid:String){
         self.uid = uid
     }
+    
+    // MARK: - get Methods
+    
     public func getFirstName()->String?{
         return self.userFirstName
     }
@@ -46,18 +53,20 @@ class User{
     }
     
     
-    
+    // MARK: - Create User
     public func createUserWithEmail(completion:@escaping ((AuthDataResult?,Error?)->Void)){
         Auth.auth().createUser(withEmail: self.email!, password: self.password!) { result, error in
             if (error != nil){
                 completion(nil, error)
             }else{
-                self.uid = result?.user.uid
+                self.setUid(uid: (result?.user.uid)!)
                 self.addUserToDataBase()
                 completion(result, nil)
             }
         }
     }
+    
+    // MARK: - Login
     
     public func logIn(completion:@escaping ((AuthDataResult?,Error?)->Void)) {
         
@@ -79,6 +88,8 @@ class User{
         }
     }
     
+    // MARK: - Database
+    
     public func addUserToDataBase(){
         let ref = Database.database().reference().child("users")
         ref.child(self.uid!).updateChildValues([
@@ -88,34 +99,15 @@ class User{
         ])
     }
     
-    public func isSignIn() -> Bool{
-        return Auth.auth().isSignIn(withEmailLink: self.email!)
-    }
+    // MARK: - getting From Database
     
-    public func isUserExistByEmail( completion: @escaping ((Bool)->Void) ) {
-        Auth.auth().fetchSignInMethods(forEmail: self.email!) { providers, error in
-            if error != nil{
-                print(error)
-                completion(false)
-            }else{
-                if providers != nil{
-                    completion(true)
-                }else{
-                    completion(false)
-                }
-                
-            }
-        }
-    }
-    
-    public func getUserFirstName(completion: @escaping ((Error?,String?)->Void)){
+    public func getUserFirstNameFromDatabase(completion: @escaping ((Error?,String?)->Void)){
         let user = Auth.auth().currentUser
         let ref = Database.database().reference().child("users")
         
         let databaseUser = ref.child(user!.uid)
         databaseUser.child("firstname").getData { error, dataSnapshot in
             if error != nil{
-                print(error)
                 completion(error,nil)
                 
             }else{
@@ -127,14 +119,13 @@ class User{
 
     }
     
-    public func getUserLastName(completion: @escaping ((Error?,String?)->Void)){
+    public func getUserLastNameFromDatabase(completion: @escaping ((Error?,String?)->Void)){
         let user = Auth.auth().currentUser
         let ref = Database.database().reference().child("users")
         
         let databaseUser = ref.child(user!.uid)
         databaseUser.child("lastname").getData { error, dataSnapshot in
             if error != nil{
-                print(error)
                 completion(error,nil)
             }else{
                 self.userLastName = dataSnapshot?.value as? String ?? "Unknown"
@@ -144,4 +135,26 @@ class User{
         }
     }
     
+    
+    
+    // MARK: - validation Funcs
+    
+    public func isSignIn() -> Bool{
+        return Auth.auth().isSignIn(withEmailLink: self.email!)
+    }
+    
+    public func isUserExistByEmail( completion: @escaping ((Bool)->Void) ) {
+        Auth.auth().fetchSignInMethods(forEmail: self.email!) { providers, error in
+            if error != nil{
+                completion(false)
+            }else{
+                if providers != nil{
+                    completion(true)
+                }else{
+                    completion(false)
+                }
+                
+            }
+        }
+    }
 }
