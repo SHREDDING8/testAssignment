@@ -75,8 +75,7 @@ class passwordViewController: UIViewController {
                 AppDelegate.user.logIn { result, error in
                     if error != nil{
                     }else{
-                        AppDelegate.user.setCurrentUser()
-                        self.dismiss(animated: true)
+                        (self.parent as! SignInViewController).goToMainPage()
                     }
                 }
             }

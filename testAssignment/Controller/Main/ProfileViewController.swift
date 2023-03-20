@@ -41,7 +41,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         DispatchQueue.main.async {
             self.activityIndicator.startAnimating()
-            self.configureName()
+            
         }
         
         configureViews()
@@ -49,6 +49,10 @@ class ProfileViewController: UIViewController {
         configureButtonUpload()
         
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.configureProfile()
     }
     
         
@@ -64,8 +68,6 @@ class ProfileViewController: UIViewController {
         self.profilePhoto.addGestureRecognizer(gestureChangePhoto)
         
         setCornerRadius(views: [profilePhoto], cornerRadius: 30.0)
-        
-    
     }
     
     fileprivate func configureTableView(){
@@ -78,7 +80,7 @@ class ProfileViewController: UIViewController {
     
     
     
-    fileprivate func configureName(){
+    fileprivate func configureProfile(){
         self.name.text = AppDelegate.user.getFirstName() + " " + AppDelegate.user.getLastName()
         
 //        user.getUserFirstNameFromDatabase(completion: { error, firstName in

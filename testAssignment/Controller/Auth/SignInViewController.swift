@@ -11,7 +11,7 @@ import FirebaseCore
 import FirebaseAuth
 
 class SignInViewController: UIViewController {
-        
+    
     // MARK: - Outlets
     
     @IBOutlet weak var firstName: UITextField!
@@ -32,7 +32,9 @@ class SignInViewController: UIViewController {
     
     @IBOutlet weak var logIn: UILabel!
     
+    @IBOutlet weak var loadPage: UIView!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -114,6 +116,8 @@ class SignInViewController: UIViewController {
             
             loginViewController.doAferClickSignIn = {
                 self.removeAndShowChild(controller: loginViewController)
+                
+                
             }
             
             self.addAndShowChild(controller: loginViewController)
@@ -127,6 +131,34 @@ class SignInViewController: UIViewController {
             }else{
                 self.addAndShowChild(controller: passwordViewController)
             }
+        }
+    }
+    public func goToMainPage(){
+        
+        for child in self.children{
+            self.removeAndShowChild(controller: child)
+        }
+        
+        
+        self.loadPage.layer.opacity = 0
+        self.loadPage.isHidden = false
+        
+        UIView.transition(with: self.loadPage, duration: 0.3,options: .transitionCrossDissolve) {
+            self.loadPage.layer.opacity = 1
+        }
+        
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.startAnimating()
+        
+        AppDelegate.user.setCurrentUser {
+            UIView.transition(with: self.loadPage, duration: 0.3,options: .transitionCrossDissolve) {
+                self.loadPage.layer.opacity = 0
+            }
+            
+            self.loadPage.isHidden = true
+            self.activityIndicator.stopAnimating()
+            
+            self.dismiss(animated: true)
         }
     }
     
@@ -181,8 +213,7 @@ class SignInViewController: UIViewController {
                 if error != nil{
                 }else{
                     AppDelegate.user.setUid(uid: (resultLogin?.user.uid)!)
-                    AppDelegate.user.setCurrentUser()
-                    self.dismiss(animated: true)
+                    self.goToMainPage()
                 }
             }
         }

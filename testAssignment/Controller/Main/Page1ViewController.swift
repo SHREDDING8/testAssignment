@@ -16,10 +16,8 @@ class Page1ViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if AppDelegate.isfirstLogin{
-            AppDelegate.isfirstLogin = !AppDelegate.isfirstLogin
-            
-            AppDelegate.user.setCurrentUser()
+        if AppDelegate.isSetUser{
+            AppDelegate.isSetUser = !AppDelegate.isSetUser
             
         }
     }

@@ -104,8 +104,7 @@ class LoginViewController: UIViewController {
             if error != nil{
                 self.errorAlert(title: "Error", message: "Wrong Email or password")
             }else{
-                AppDelegate.user.setCurrentUser()
-                self.dismiss(animated: true)
+                (self.parent as! SignInViewController).goToMainPage()
             }
         }
     }

@@ -70,32 +70,39 @@ class User{
         return self.profilePhoto
     }
     
-    public func setCurrentUser(){
-        let user = Auth.auth().currentUser
-        self.setUid(uid: user!.uid)
+    public func setCurrentUser(completion: (()->Void)? = nil){
+        guard let user = Auth.auth().currentUser else{ return }
+        self.setUid(uid: user.uid)
         
         storage.getUserFirstNameFromDatabase(uid: self.getUid()) { error, result in
             if error != nil{
                 print(error)
             }else{
                 self.setUserFirstName(firstName: result!)
+                
+                self.storage.getUserLastNameFromDatabase(uid: self.getUid()) { error, result in
+                    if error != nil{
+                        print(error)
+                    }else{
+                        self.setLastName(lastName: result!)
+                        
+                        self.storage.getPhotoFromDatabase(uid: self.getUid()) { image, error in
+                            if error != nil{
+                                print(error)
+                            }else{
+                                self.profilePhoto = image ?? UIImage(named: "no photo")!
+                            }
+                            completion?()
+                        }
+                        
+                    }
+                }
+                
             }
         }
-        storage.getUserLastNameFromDatabase(uid: self.getUid()) { error, result in
-            if error != nil{
-                print(error)
-            }else{
-                self.setLastName(lastName: result!)
-            }
-        }
-        storage.getPhotoFromDatabase(uid: self.getUid()) { image, error in
-            if error != nil{
-                print(error)
-            }else{
-                self.profilePhoto = image ?? UIImage(named: "no photo")!
-            }
-        }
-        self.setEmail(email: (user?.email)!)
+        
+        
+        self.setEmail(email: (user.email)!)
     }
     
     
@@ -122,7 +129,6 @@ class User{
                 completion(nil,error)
             }else{
                 completion(result,nil)
-                self.setCurrentUser()
             }
         }
     }
@@ -132,7 +138,6 @@ class User{
                 completion(nil,error)
             }else{
                 completion(result,nil)
-                self.setCurrentUser()
             }
         }
     }
@@ -144,87 +149,7 @@ class User{
         self.setProfilePhoto(image: UIImage(named: "no photo")!)
     }
     
-//     MARK: - Database
-    
-//    public func addUserToDataBase(){
-//        let ref = Database.database().reference().child("users")
-//        ref.child(self.uid!).updateChildValues([
-//            "firstname":self.firstName!,
-//            "lastname":lastName!,
-//            "email":self.email!
-//        ])
-//    }
-//    public func addPhotoToDatabase(image:UIImage){
-//        let ref = storage.reference().child(self.uid!)
-//        let uploadData = image.pngData()
-//        ref.putData(uploadData!) { result, error in
-//            if error != nil{
-//                print(error)
-//            }else{
-//                print("success")
-//            }
-//        }
-//    }
-//    public func getPhotoFromDatabase(completion:@escaping ((UIImage?,Error?)->Void)){
-//        let ref = storage.reference().child(self.uid!)
-//        ref.getData(maxSize: Int64.max) { data, error in
-//            if error != nil{
-//                print(error)
-//                completion(nil,error)
-//            }
-//            else{
-//                completion(UIImage(data: data!),nil)
-//            }
-//        }
-//    }
-//    public func deletePhotoFromStorage(){
-//        let ref = storage.reference().child(self.uid!)
-//        ref.delete { error in
-//            if error != nil{
-//                print(error)
-//            }
-//        }
-//    }
-    
-    // MARK: - getting From Database
-    
-//    public func getUserFirstNameFromDatabase(completion: @escaping ((Error?,String?)->Void)){
-//        let user = Auth.auth().currentUser
-//        self.setUid(uid: user!.uid)
-//        let ref = Database.database().reference().child("users")
-//        
-//        let databaseUser = ref.child(user!.uid)
-//        databaseUser.child("firstname").getData { error, dataSnapshot in
-//            if error != nil{
-//                completion(error,nil)
-//                
-//            }else{
-//                self.firstName = dataSnapshot?.value as? String ?? "Unknown"
-//                completion(nil,self.firstName)
-//            }
-//            
-//        }
-//
-//    }
-//    
-//    public func getUserLastNameFromDatabase(completion: @escaping ((Error?,String?)->Void)){
-//        let user = Auth.auth().currentUser
-//        let ref = Database.database().reference().child("users")
-//        
-//        let databaseUser = ref.child(user!.uid)
-//        databaseUser.child("lastname").getData { error, dataSnapshot in
-//            if error != nil{
-//                completion(error,nil)
-//            }else{
-//                self.lastName = dataSnapshot?.value as? String ?? "Unknown"
-//                completion(nil,self.lastName)
-//            }
-//           
-//        }
-//    }
-    
-    
-    
+
     // MARK: - validation Funcs
     
     public func isSignIn() -> Bool{

@@ -337,6 +337,20 @@
                                     <action selector="signIn:" destination="SFV-gf-BMB" eventType="touchUpInside" id="Avz-Kn-XWU"/>
                                 </connections>
                             </button>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wbt-1v-YYb">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Ze1-Dr-VGU">
+                                        <rect key="frame" x="188.66666666666666" y="429.66666666666669" width="37" height="37"/>
+                                        <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" name="backGround"/>
+                                <constraints>
+                                    <constraint firstItem="Ze1-Dr-VGU" firstAttribute="centerX" secondItem="wbt-1v-YYb" secondAttribute="centerX" id="6SG-ek-TWE"/>
+                                    <constraint firstItem="Ze1-Dr-VGU" firstAttribute="centerY" secondItem="wbt-1v-YYb" secondAttribute="centerY" id="POz-mz-RNJ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="yHW-cB-wQe"/>
                         <color key="backgroundColor" name="backGround"/>
@@ -348,14 +362,17 @@
                             <constraint firstItem="I7D-0W-uiD" firstAttribute="top" secondItem="yHW-cB-wQe" secondAttribute="top" constant="126" id="FIK-zI-493"/>
                             <constraint firstItem="I7D-0W-uiD" firstAttribute="centerX" secondItem="7v1-nF-oOj" secondAttribute="centerX" id="H7j-o0-iC0"/>
                             <constraint firstItem="Qdd-ws-5T9" firstAttribute="top" secondItem="qIp-9E-hsi" secondAttribute="bottom" constant="35" id="Hyg-2e-FPR"/>
+                            <constraint firstItem="wbt-1v-YYb" firstAttribute="top" secondItem="7v1-nF-oOj" secondAttribute="top" id="IPq-Aj-ujj"/>
                             <constraint firstItem="me6-2O-XnR" firstAttribute="top" secondItem="gM8-DA-bmV" secondAttribute="bottom" constant="18" id="KC2-Vn-N7f"/>
                             <constraint firstItem="RVo-oe-M0A" firstAttribute="top" secondItem="me6-2O-XnR" secondAttribute="bottom" constant="74" id="KD7-TT-TOq"/>
+                            <constraint firstItem="wbt-1v-YYb" firstAttribute="trailing" secondItem="yHW-cB-wQe" secondAttribute="trailing" id="KN2-gf-4KU"/>
                             <constraint firstItem="fUH-bm-Hq2" firstAttribute="top" secondItem="gM8-DA-bmV" secondAttribute="bottom" constant="18" id="MW2-LU-aE4"/>
                             <constraint firstItem="NlE-EX-nM6" firstAttribute="centerX" secondItem="7v1-nF-oOj" secondAttribute="centerX" id="NsU-mU-zCe"/>
                             <constraint firstItem="gM8-DA-bmV" firstAttribute="width" secondItem="X1R-tA-CsK" secondAttribute="width" id="Um4-9i-HFW"/>
                             <constraint firstItem="yHW-cB-wQe" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="me6-2O-XnR" secondAttribute="trailing" id="Wg3-TB-dVB"/>
                             <constraint firstItem="NlE-EX-nM6" firstAttribute="top" secondItem="RVo-oe-M0A" secondAttribute="bottom" constant="38" id="WoZ-Kf-4iI"/>
                             <constraint firstItem="Qdd-ws-5T9" firstAttribute="width" secondItem="qIp-9E-hsi" secondAttribute="width" id="XU1-nm-fQ5"/>
+                            <constraint firstItem="wbt-1v-YYb" firstAttribute="leading" secondItem="7v1-nF-oOj" secondAttribute="leading" id="bly-5K-oqj"/>
                             <constraint firstItem="X1R-tA-CsK" firstAttribute="width" secondItem="qIp-9E-hsi" secondAttribute="width" id="eLR-YL-sNQ"/>
                             <constraint firstItem="I7D-0W-uiD" firstAttribute="leading" secondItem="yHW-cB-wQe" secondAttribute="leading" constant="30" id="gGt-kA-kZP"/>
                             <constraint firstItem="RVo-oe-M0A" firstAttribute="centerX" secondItem="7v1-nF-oOj" secondAttribute="centerX" id="i11-p0-vxm"/>
@@ -363,14 +380,17 @@
                             <constraint firstItem="NlE-EX-nM6" firstAttribute="width" secondItem="RVo-oe-M0A" secondAttribute="width" id="kEo-Ne-zej"/>
                             <constraint firstItem="X1R-tA-CsK" firstAttribute="top" secondItem="Qdd-ws-5T9" secondAttribute="bottom" constant="35" id="mA1-Xv-CBh"/>
                             <constraint firstItem="gM8-DA-bmV" firstAttribute="top" secondItem="X1R-tA-CsK" secondAttribute="bottom" constant="35" id="nVD-xq-dMe"/>
+                            <constraint firstAttribute="bottom" secondItem="wbt-1v-YYb" secondAttribute="bottom" id="pDd-i9-H8K"/>
                             <constraint firstItem="me6-2O-XnR" firstAttribute="leading" secondItem="fUH-bm-Hq2" secondAttribute="trailing" constant="5" id="qyw-Am-mRf"/>
                             <constraint firstItem="qIp-9E-hsi" firstAttribute="top" secondItem="I7D-0W-uiD" secondAttribute="bottom" constant="78" id="siP-Pc-SaQ"/>
                             <constraint firstItem="qIp-9E-hsi" firstAttribute="leading" secondItem="yHW-cB-wQe" secondAttribute="leading" constant="30" id="yRK-2f-1I5"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Ze1-Dr-VGU" id="yLr-zg-fM0"/>
                         <outlet property="email" destination="X1R-tA-CsK" id="YQ0-vV-885"/>
                         <outlet property="firstName" destination="qIp-9E-hsi" id="3fj-Tk-n8G"/>
+                        <outlet property="loadPage" destination="wbt-1v-YYb" id="M05-vb-o1L"/>
                         <outlet property="logIn" destination="me6-2O-XnR" id="cGA-0d-9Bu"/>
                         <outlet property="logInButton" destination="me6-2O-XnR" id="wHs-cP-f53"/>
                         <outlet property="secondName" destination="Qdd-ws-5T9" id="XGe-Ts-xk0"/>
@@ -381,7 +401,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ghk-xU-L0e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-61" y="-3"/>
+            <point key="canvasLocation" x="-62.318840579710148" y="-3.3482142857142856"/>
         </scene>
         <!--MenuUI Tab Bar Controller-->
         <scene sceneID="dVC-iy-e7h">
@@ -421,30 +441,12 @@
                                 <color key="textColor" red="0.086274509799999996" green="0.094117647060000004" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bVm-TV-oAt">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Zrk-dp-bEk">
-                                        <rect key="frame" x="188.66666666666666" y="388" width="37" height="37"/>
-                                        <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <color key="backgroundColor" name="backGround"/>
-                                <constraints>
-                                    <constraint firstItem="Zrk-dp-bEk" firstAttribute="centerY" secondItem="bVm-TV-oAt" secondAttribute="centerY" id="2pr-pT-Opp"/>
-                                    <constraint firstItem="Zrk-dp-bEk" firstAttribute="centerX" secondItem="bVm-TV-oAt" secondAttribute="centerX" id="ZXR-fa-GEu"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="5Eu-fO-LFd"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="5Eu-fO-LFd" firstAttribute="bottom" secondItem="bVm-TV-oAt" secondAttribute="bottom" id="5pr-Za-PWU"/>
-                            <constraint firstItem="bVm-TV-oAt" firstAttribute="top" secondItem="4Hb-RE-0bA" secondAttribute="top" id="KEs-Ys-yA8"/>
-                            <constraint firstItem="bVm-TV-oAt" firstAttribute="leading" secondItem="4Hb-RE-0bA" secondAttribute="leading" id="Svy-ca-YLh"/>
                             <constraint firstItem="G3g-q9-D9j" firstAttribute="top" secondItem="5Eu-fO-LFd" secondAttribute="top" constant="200" id="c0K-2s-Y64"/>
                             <constraint firstItem="G3g-q9-D9j" firstAttribute="centerX" secondItem="4Hb-RE-0bA" secondAttribute="centerX" id="qgF-Y2-0a4"/>
-                            <constraint firstAttribute="trailing" secondItem="bVm-TV-oAt" secondAttribute="trailing" id="tQS-0i-5MV"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="page 1" id="YMN-nL-cAv"/>
