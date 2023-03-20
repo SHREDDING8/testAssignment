@@ -13,8 +13,7 @@ class MenuUITabBarController: UITabBarController {
         super.viewDidLoad()
 
         tabBar.layer.masksToBounds = true
-        tabBar.layer.cornerRadius = 30
-        
+        tabBar.layer.cornerRadius = tabBar.frame.height / 2 - 2
     }
     
 

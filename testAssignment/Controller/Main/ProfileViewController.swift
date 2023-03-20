@@ -25,11 +25,9 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet weak var name: UILabel!
     
-    @IBOutlet weak var loadPage: UIView!
     
     @IBOutlet weak var changePhotoButton: UILabel!
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     let imagePicker:UIImagePickerController = {
         let picker = UIImagePickerController()
@@ -39,11 +37,6 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        DispatchQueue.main.async {
-            self.activityIndicator.startAnimating()
-            
-        }
-        
         configureViews()
         configureTableView()
         configureButtonUpload()
@@ -83,38 +76,8 @@ class ProfileViewController: UIViewController {
     fileprivate func configureProfile(){
         self.name.text = AppDelegate.user.getFirstName() + " " + AppDelegate.user.getLastName()
         
-//        user.getUserFirstNameFromDatabase(completion: { error, firstName in
-//            if error != nil{
-//                self.name.text = ""
-//            }else{
-//                self.name.text = firstName! + " "
-//            }
-//        })
-//
-//        user.getUserLastNameFromDatabase { error, lastName in
-//            if error != nil{
-//                self.name.text! += ""
-//            }else{
-//                self.name.text! += lastName!
-//            }
-//
-//        }
-        
         self.profilePhoto.image = AppDelegate.user.getProfilephoto()
-        
-//        user.getPhotoFromDatabase { image, error in
-//            if error != nil{
-//            }else{
-//                self.profilePhoto.image = image
-//            }
-//            self.loadPage.isHidden = true
-//            self.activityIndicator.stopAnimating()
-//            self.activityIndicator.isHidden = true
-//            UIView.transition(with: self.loadPage, duration: 0.3,options: .transitionCrossDissolve) {
-//                self.loadPage.layer.opacity = 0
-//            }
-//        }
-        
+                
     }
     
     fileprivate func setCornerRadius(views:[UIView],cornerRadius:Double){

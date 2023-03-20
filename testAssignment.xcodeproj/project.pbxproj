@@ -15,6 +15,8 @@
 		EE51254629C4EEFC005FC467 /* passwordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51254529C4EEFC005FC467 /* passwordViewController.swift */; };
 		EE51254829C51AF3005FC467 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51254729C51AF3005FC467 /* ProfileViewController.swift */; };
 		EE51254C29C64869005FC467 /* MenuUITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE51254B29C64869005FC467 /* MenuUITabBarController.swift */; };
+		EE6C9D6C29C8894F00C7E0F5 /* NavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = EE6C9D6B29C8894F00C7E0F5 /* NavigationBar.xib */; };
+		EE6C9D6E29C889FC00C7E0F5 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6C9D6D29C889FC00C7E0F5 /* NavigationBar.swift */; };
 		EEABF30029C35B4B000F9508 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EEC38FA529C1DD1500648688 /* Main.storyboard */; };
 		EEABF30129C35B4E000F9508 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EEC38FAD29C1DD1600648688 /* LaunchScreen.storyboard */; };
 		EEABF30329C35B57000F9508 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEC38FAB29C1DD1600648688 /* Assets.xcassets */; };
@@ -36,6 +38,8 @@
 		EE51254529C4EEFC005FC467 /* passwordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = passwordViewController.swift; sourceTree = "<group>"; };
 		EE51254729C51AF3005FC467 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		EE51254B29C64869005FC467 /* MenuUITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuUITabBarController.swift; sourceTree = "<group>"; };
+		EE6C9D6B29C8894F00C7E0F5 /* NavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationBar.xib; sourceTree = "<group>"; };
+		EE6C9D6D29C889FC00C7E0F5 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		EEABF30529C37107000F9508 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EEC0613B29C356CA00DED509 /* Montserrat-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-ThinItalic.ttf"; path = "../../../../../../Downloads/Montserrat/Montserrat-ThinItalic.ttf"; sourceTree = "<group>"; };
 		EEC0613C29C356CA00DED509 /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Italic.ttf"; path = "../../../../../../Downloads/Montserrat/Montserrat-Italic.ttf"; sourceTree = "<group>"; };
@@ -124,6 +128,15 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		EE6C9D6A29C8893600C7E0F5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EE6C9D6B29C8894F00C7E0F5 /* NavigationBar.xib */,
+				EE6C9D6D29C889FC00C7E0F5 /* NavigationBar.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		EEABF30429C370CA000F9508 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +192,7 @@
 		EEC38F9E29C1DD1500648688 /* testAssignment */ = {
 			isa = PBXGroup;
 			children = (
+				EE6C9D6A29C8893600C7E0F5 /* View */,
 				EE51254229C4DEB1005FC467 /* Model */,
 				EEABF30429C370CA000F9508 /* Controller */,
 				EEC0613A29C356A800DED509 /* Fonts */,
@@ -259,6 +273,7 @@
 				EE43AA7929C4C37800CD49AC /* GoogleService-Info.plist in Resources */,
 				EEABF30129C35B4E000F9508 /* LaunchScreen.storyboard in Resources */,
 				EEABF30029C35B4B000F9508 /* Main.storyboard in Resources */,
+				EE6C9D6C29C8894F00C7E0F5 /* NavigationBar.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +337,7 @@
 				EE40E34629C7A8AD007AAEE7 /* Database.swift in Sources */,
 				EE40E34829C7B45D007AAEE7 /* Page1ViewController.swift in Sources */,
 				EE51254829C51AF3005FC467 /* ProfileViewController.swift in Sources */,
+				EE6C9D6E29C889FC00C7E0F5 /* NavigationBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
