@@ -95,6 +95,7 @@ class LoginViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction func logIn(_ sender: Any) {
+        AppDelegate.user = User()
         textFieldResign(textFields: [email,password])
         
         AppDelegate.user.setEmail(email: email.text ?? "")

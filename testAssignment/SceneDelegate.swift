@@ -31,8 +31,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             else{
                 self.isUser = true
+                print("firstname: " + AppDelegate.user.getFirstName())
                 showSignInPage()
-                AppDelegate.user.setCurrentUser()
+                print("firstname 2: " + AppDelegate.user.getFirstName())
+//                AppDelegate.user.setCurrentUser()
+                print("firstname 3: " + AppDelegate.user.getFirstName())
             }
             
             guard let _ = (scene as? UIWindowScene) else { return }
@@ -45,7 +48,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .coverVertical
             self.window?.rootViewController?.present(vc, animated: true)
-            if isUser{
+            if isUser && !AppDelegate.user.isLogin{
                 vc.goToMainPage()
             }
         }

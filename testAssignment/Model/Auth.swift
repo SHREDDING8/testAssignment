@@ -29,6 +29,10 @@ class User{
     private var isGoogleUser = false
     private var photoUrl:URL?
     
+    public var isGooglePhotoSet = false
+    
+    public var isLogin = false
+    
     // MARK: - set Methods
     
     public func setUserFirstName(firstName:String){
@@ -109,6 +113,7 @@ class User{
                 print(error)
             }else{
                 self.setUserFirstName(firstName: result!)
+                print("getted: " + AppDelegate.user.getFirstName())
                 
                 self.storage.getUserLastNameFromDatabase(uid: self.getUid()) { error, result in
                     if error != nil{
@@ -120,21 +125,23 @@ class User{
                             if error != nil{
                                 print(error)
                             }else{
-                                    self.profilePhoto = image ?? UIImage(named: "no photo")!
-                            }
-                            if self.getIsUserGoogle() && self.getphotoUrl() != nil{
-                                self.setGooglePhoto {
-                                    completion?()
+                                if image != nil{
+                                    self.profilePhoto = image!
+                                }else{
+                                    if self.getIsUserGoogle() && self.getphotoUrl() != nil{
+                                        self.setGooglePhoto {
+                                            completion?()
+                                        }
+                                    }else{
+                                        self.profilePhoto = UIImage(named: "no photo")!
+                                        completion?()
+                                    }
                                 }
-                            }else{
-                                completion?()
                             }
-                            
+                            completion?()
                         }
-                        
                     }
                 }
-                
             }
         }
         
@@ -151,7 +158,7 @@ class User{
                 completion(nil, error)
             }else{
                 self.setUid(uid: (result?.user.uid)!)
-                self.storage.addUserToDataBase(uid: self.getUid(), firstName: self.getFirstName(), lastName: self.getLastName(), email: self.getEmail())
+                self.storage.addUserToDataBase(uid: self.getUid(), firstName: self.getFirstName(), lastName: self.getLastName(), email: self.getEmail(),isGoogleUser: false,urlPhotoGoogle: nil)
                 completion(result, nil)
             }
         }
@@ -161,6 +168,7 @@ class User{
     
     public func logIn(completion:@escaping ((AuthDataResult?,Error?)->Void)) {
         
+        self.isLogin = true
         Auth.auth().signIn(withEmail: self.email!, password: self.password!) { result, error in
             if error != nil{
                 completion(nil,error)
@@ -170,11 +178,15 @@ class User{
         }
     }
     public func logInViaGoogle(completion:@escaping ((AuthDataResult?,Error?)->Void)){
+        self.isLogin = true
         Auth.auth().signIn(with: crenedtial!) { result, error in
             if error != nil{
                 completion(nil,error)
             }else{
+                self.setUid(uid: (result?.user.uid)!)
+                self.storage.addUserToDataBase(uid: self.getUid(), firstName: self.getFirstName(), lastName: self.getLastName(), email: self.getEmail(), isGoogleUser: true, urlPhotoGoogle: self.getphotoUrl()?.absoluteString)
                 completion(result,nil)
+                
             }
         }
     }

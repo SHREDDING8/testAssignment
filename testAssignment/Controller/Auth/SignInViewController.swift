@@ -88,6 +88,7 @@ class SignInViewController: UIViewController {
     }
     
     @IBAction func signIn(_ sender: Any){
+        AppDelegate.user = User()
         firstName.resignFirstResponder()
         secondName.resignFirstResponder()
         email.resignFirstResponder()
@@ -149,6 +150,7 @@ class SignInViewController: UIViewController {
         
         self.activityIndicator.isHidden = false
         self.activityIndicator.startAnimating()
+        print("firstname 6: " + AppDelegate.user.getFirstName())
         
         AppDelegate.user.setCurrentUser {
             UIView.transition(with: self.loadPage, duration: 0.3,options: .transitionCrossDissolve) {
@@ -208,14 +210,15 @@ class SignInViewController: UIViewController {
             AppDelegate.user.setLastName(lastName: userGoogle.profile?.familyName ?? "")
             AppDelegate.user.setUserFirstName(firstName: userGoogle.profile?.givenName ?? "")
             AppDelegate.user.setCredential(credential: credential)
+            print("set: " + AppDelegate.user.getFirstName())
+            AppDelegate.user.setIsUserGoogle(isUserGoogle: true)
+            AppDelegate.user.setphotoUrl(photoUrl: userGoogle.profile?.imageURL(withDimension: 100))
             
             
             AppDelegate.user.logInViaGoogle { [self] resultLogin, errorlogIn in
                 if error != nil{
                 }else{
                     AppDelegate.user.setIsUserGoogle(isUserGoogle: true)
-                    AppDelegate.user.setphotoUrl(photoUrl: userGoogle.profile?.imageURL(withDimension: 100))
-                    AppDelegate.user.setUid(uid: (resultLogin?.user.uid)!)
                     self.goToMainPage()
                 }
             }

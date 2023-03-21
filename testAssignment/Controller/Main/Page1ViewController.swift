@@ -44,6 +44,7 @@ class Page1ViewController: UIViewController {
         super.viewDidLoad()
         configureViews()
         registerNib()
+        print("firstname 4: " + AppDelegate.user.getFirstName())
     }
     
     override func viewWillAppear(_ animated: Bool) {

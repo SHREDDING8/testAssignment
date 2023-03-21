@@ -15,13 +15,16 @@ class DatabaseItems{
     let storage = Storage.storage()
     
     
-    public func addUserToDataBase(uid:String,firstName:String,lastName:String,email:String){
+    public func addUserToDataBase(uid:String,firstName:String,lastName:String,email:String,isGoogleUser:Bool,urlPhotoGoogle:String?){
         let ref = Database.database().reference().child("users")
         ref.child(uid).updateChildValues([
             "firstname":firstName,
             "lastname":lastName,
-            "email":email
+            "email":email,
+            "isGoogleUser":isGoogleUser,
+            "urlPhotoGoogle": urlPhotoGoogle as Any
         ])
+        print("data added")
     }
     public func addPhotoToDatabase(uid:String,image:UIImage){
         let ref = storage.reference().child(uid)
@@ -82,6 +85,20 @@ class DatabaseItems{
             }else{
                 let lastName = dataSnapshot?.value as? String ?? "Unknown"
                 completion(nil,lastName)
+            }
+        }
+    }
+    
+    public func getIsUserGoogleFromDatabase(uid:String, completion: @escaping ((Error?,Bool?)->Void)){
+        let ref = Database.database().reference().child("users")
+        
+        let databaseUser = ref.child(uid)
+        databaseUser.child("isGoogleUser").getData { error, dataSnapshot in
+            if error != nil{
+                completion(error,nil)
+            }else{
+                let isGoogleUser = dataSnapshot?.value as? Bool ?? false
+                completion(nil,isGoogleUser)
             }
         }
     }
