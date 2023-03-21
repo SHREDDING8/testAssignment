@@ -99,6 +99,14 @@ class ProfileViewController: UIViewController {
            imagePicker.sourceType = .camera
            self.present(imagePicker, animated: true)
        }
+       if AppDelegate.user.getIsUserGoogle() && AppDelegate.user.getphotoUrl() != nil && AppDelegate.user.getProfilephoto() == UIImage(named: "no photo")! {
+           let uploadGooglePhotoAction = UIAlertAction(title: "Upload photo from google", style: .default) { _ in
+               AppDelegate.user.setGooglePhoto {
+                   self.profilePhoto.image = AppDelegate.user.getProfilephoto()
+               }
+           }
+           alert.addAction(uploadGooglePhotoAction)
+       }
        let actionDeletePhoto = UIAlertAction(title: "Delete Photo", style: .default) { [self] _ in
            self.profilePhoto.image = UIImage(named: "no photo")
            AppDelegate.user.deletePhoto()

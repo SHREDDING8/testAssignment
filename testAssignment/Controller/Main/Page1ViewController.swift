@@ -9,7 +9,22 @@ import UIKit
 
 class Page1ViewController: UIViewController {
     
+    // MARK: - Variables
+    
+    let categories = ["Phones","Headphones","Games","Cars","Furniture","Kids"]
+    let brands = ["Nike","Puma","Mersedes","iPhone"]
+    
     @IBOutlet weak var navigationBar: NavigationBar!
+    
+    @IBOutlet weak var categoryCollectionView: UICollectionView!
+    
+    
+    @IBOutlet weak var latestCollectionView: UICollectionView!
+    
+    
+    @IBOutlet weak var brandsCollectionView: UICollectionView!
+    
+    @IBOutlet weak var flashSaleCollectionView: UICollectionView!
     
     let searchGlobalView:UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
@@ -28,6 +43,7 @@ class Page1ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
+        registerNib()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +54,7 @@ class Page1ViewController: UIViewController {
     
     // MARK: - configuration
     
-    public func configureViews(){
+    fileprivate func configureViews(){
         setCornerRadius(views: [searchField], cornerRadius: 15.0)
         setPlaceholder(textFields: [searchField], placeholders: ["What are you loocking for?"])
         
@@ -49,6 +65,31 @@ class Page1ViewController: UIViewController {
         searchField.rightViewMode = .always
         searchField.layer.borderColor = UIColor.darkGray.cgColor
         searchField.layer.borderWidth = 1
+        
+        self.categoryCollectionView.delegate = self
+        self.categoryCollectionView.dataSource = self
+        self.latestCollectionView.delegate = self
+        self.latestCollectionView.dataSource = self
+        self.flashSaleCollectionView.delegate = self
+        self.flashSaleCollectionView.dataSource = self
+        self.brandsCollectionView.delegate = self
+        self.brandsCollectionView.dataSource = self
+        
+    }
+    
+    fileprivate func registerNib(){
+        let nibCategory = UINib(nibName: "CategoryCollectionViewCell", bundle: nil)
+        self.categoryCollectionView.register(nibCategory, forCellWithReuseIdentifier: "CategoryCollectionViewCell")
+        
+        let nibLatest = UINib(nibName: "LatestCollectionViewCell", bundle: nil)
+        self.latestCollectionView.register(nibLatest, forCellWithReuseIdentifier: "LatestCollectionViewCell")
+        
+        let nibFlashSale = UINib(nibName: "FlashScaleCollectionViewCell", bundle: nil)
+        self.flashSaleCollectionView.register(nibFlashSale, forCellWithReuseIdentifier: "FlashScaleCollectionViewCell")
+        
+        let nibBranbs = UINib(nibName: "BrandsCollectionViewCell", bundle: nil)
+        self.brandsCollectionView.register(nibBranbs, forCellWithReuseIdentifier: "BrandsCollectionViewCell")
+        
         
     }
     
@@ -79,4 +120,42 @@ class Page1ViewController: UIViewController {
      }
      */
     
+}
+extension Page1ViewController:UICollectionViewDelegate,UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == self.categoryCollectionView{
+            return 6
+        }else if collectionView == self.latestCollectionView{
+            return 6
+        } else if collectionView == self.flashSaleCollectionView{
+            return 6
+        }else if collectionView == self.brandsCollectionView{
+            return 4
+        }
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == self.categoryCollectionView{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCollectionViewCell", for: indexPath) as? CategoryCollectionViewCell
+            cell?.categoryTitle.text = categories[indexPath.row]
+            cell?.caterogyImage.image = UIImage(named: categories[indexPath.row])
+            return cell ?? UICollectionViewCell()
+        }else if (collectionView == self.latestCollectionView){
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LatestCollectionViewCell", for: indexPath) as? LatestCollectionViewCell
+            return cell ?? UICollectionViewCell()
+        } else if collectionView == self.flashSaleCollectionView{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FlashScaleCollectionViewCell", for: indexPath) as? FlashScaleCollectionViewCell
+            return cell ?? UICollectionViewCell()
+        }else if collectionView == self.brandsCollectionView{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandsCollectionViewCell", for: indexPath) as? BrandsCollectionViewCell
+            
+            cell?.image.image = UIImage(named: brands[indexPath.row])
+            cell?.name.text = brands[indexPath.row]
+            return cell ?? UICollectionViewCell()
+        }
+        
+        
+        return UICollectionViewCell()
+    }
 }

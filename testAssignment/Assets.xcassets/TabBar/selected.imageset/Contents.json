@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "qwe.png",
+      "filename" : "selected.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "qwe 1.png",
+      "filename" : "selected@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "qwe 2.png",
+      "filename" : "selected@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

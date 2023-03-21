@@ -26,6 +26,8 @@ class User{
     private var uid:String?
     private var crenedtial:AuthCredential?
     private var profilePhoto:UIImage = UIImage(named: "no photo")!
+    private var isGoogleUser = false
+    private var photoUrl:URL?
     
     // MARK: - set Methods
     
@@ -51,6 +53,12 @@ class User{
         self.profilePhoto = image
         storage.addPhotoToDatabase(uid: self.getUid(), image: self.getProfilephoto())
     }
+    public func setIsUserGoogle(isUserGoogle:Bool){
+        self.isGoogleUser = isUserGoogle
+    }
+    public func setphotoUrl(photoUrl:URL?){
+        self.photoUrl = photoUrl
+    }
     
     // MARK: - get Methods
     
@@ -68,6 +76,28 @@ class User{
     }
     public func getProfilephoto() ->UIImage{
         return self.profilePhoto
+    }
+    public func getIsUserGoogle()->Bool{
+        return self.isGoogleUser
+    }
+    public func getphotoUrl()->URL?{
+        return self.photoUrl
+    }
+    
+    public func setGooglePhoto(completion: (()->Void)? = nil){
+        let request = URLRequest(url: self.getphotoUrl()!)
+        
+        
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if error != nil{
+                    print(error)
+                }else{
+                    self.setProfilePhoto(image: (UIImage(data: data!)!))
+                    DispatchQueue.main.async {
+                        completion?()
+                    }
+                }
+            }.resume()
     }
     
     public func setCurrentUser(completion: (()->Void)? = nil){
@@ -90,9 +120,16 @@ class User{
                             if error != nil{
                                 print(error)
                             }else{
-                                self.profilePhoto = image ?? UIImage(named: "no photo")!
+                                    self.profilePhoto = image ?? UIImage(named: "no photo")!
                             }
-                            completion?()
+                            if self.getIsUserGoogle() && self.getphotoUrl() != nil{
+                                self.setGooglePhoto {
+                                    completion?()
+                                }
+                            }else{
+                                completion?()
+                            }
+                            
                         }
                         
                     }

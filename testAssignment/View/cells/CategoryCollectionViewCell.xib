@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Bold.ttf">
+            <string>Montserrat-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CategoryCollectionViewCell" customModule="testAssignment" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="74" height="145"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="74" height="145"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ABq-xb-rMI">
+                        <rect key="frame" x="0.0" y="0.0" width="74" height="145"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="phones" translatesAutoresizingMaskIntoConstraints="NO" id="eJ0-Y9-BT6">
+                        <rect key="frame" x="16" y="10" width="42" height="42"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="42" id="aif-ZB-31m"/>
+                            <constraint firstAttribute="height" constant="42" id="eXn-kS-aVZ"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phones" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i7h-hE-lWH">
+                        <rect key="frame" x="15.333333333333332" y="61.999999999999993" width="43.666666666666671" height="14.666666666666664"/>
+                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="11"/>
+                        <color key="textColor" red="0.65098039215686276" green="0.65490196078431373" blue="0.6705882352941176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="ABq-xb-rMI" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="0dc-c2-8OA"/>
+                <constraint firstAttribute="trailing" secondItem="ABq-xb-rMI" secondAttribute="trailing" id="8mW-Oi-bCw"/>
+                <constraint firstItem="eJ0-Y9-BT6" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="OsA-ch-DdX"/>
+                <constraint firstAttribute="bottom" secondItem="ABq-xb-rMI" secondAttribute="bottom" id="bMg-yW-uWK"/>
+                <constraint firstItem="eJ0-Y9-BT6" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="bsE-ky-vc7"/>
+                <constraint firstItem="ABq-xb-rMI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="iOs-Ev-RCu"/>
+                <constraint firstItem="i7h-hE-lWH" firstAttribute="top" secondItem="eJ0-Y9-BT6" secondAttribute="bottom" constant="10" id="krr-2u-ZRQ"/>
+                <constraint firstItem="i7h-hE-lWH" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="smm-nK-SHX"/>
+            </constraints>
+            <size key="customSize" width="76" height="145"/>
+            <connections>
+                <outlet property="categoryTitle" destination="i7h-hE-lWH" id="3DR-eX-4ud"/>
+                <outlet property="caterogyImage" destination="eJ0-Y9-BT6" id="wfv-MI-pT9"/>
+            </connections>
+            <point key="canvasLocation" x="140.45801526717557" y="39.7887323943662"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="phones" width="28.333333969116211" height="25.333333969116211"/>
+    </resources>
+</document>

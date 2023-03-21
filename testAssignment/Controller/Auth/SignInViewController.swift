@@ -209,9 +209,12 @@ class SignInViewController: UIViewController {
             AppDelegate.user.setUserFirstName(firstName: userGoogle.profile?.givenName ?? "")
             AppDelegate.user.setCredential(credential: credential)
             
+            
             AppDelegate.user.logInViaGoogle { [self] resultLogin, errorlogIn in
                 if error != nil{
                 }else{
+                    AppDelegate.user.setIsUserGoogle(isUserGoogle: true)
+                    AppDelegate.user.setphotoUrl(photoUrl: userGoogle.profile?.imageURL(withDimension: 100))
                     AppDelegate.user.setUid(uid: (resultLogin?.user.uid)!)
                     self.goToMainPage()
                 }
