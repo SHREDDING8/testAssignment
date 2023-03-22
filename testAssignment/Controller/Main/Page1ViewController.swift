@@ -48,7 +48,6 @@ class Page1ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWiilAppear")
         navigationBar.image.image = AppDelegate.user.getProfilephoto()
     }
     
@@ -57,7 +56,7 @@ class Page1ViewController: UIViewController {
     
     fileprivate func configureViews(){
         setCornerRadius(views: [searchField], cornerRadius: 15.0)
-        setPlaceholder(textFields: [searchField], placeholders: ["What are you loocking for?"])
+        setPlaceholder(textFields: [searchField], placeholders: ["What are you looking for?"])
         
         searchGlobalView.addSubview(searchImageView)
         searchField.rightView = searchGlobalView

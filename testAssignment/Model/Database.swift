@@ -30,9 +30,7 @@ class DatabaseItems{
         let uploadData = image.pngData()
         ref.putData(uploadData!) { result, error in
             if error != nil{
-                print(error)
-            }else{
-                print("success")
+                print("DATABASE ERROR: addPhotoToDatabase ")
             }
         }
     }
@@ -40,7 +38,7 @@ class DatabaseItems{
         let ref = storage.reference().child(uid)
         ref.getData(maxSize: Int64.max) { data, error in
             if error != nil{
-                print(error)
+                print("DATABASE ERROR: getPhotoFromDatabase")
                 completion(nil,error)
             }
             else{
@@ -52,7 +50,7 @@ class DatabaseItems{
         let ref = storage.reference().child(uid)
         ref.delete { error in
             if error != nil{
-                print(error)
+                print("DATABASE ERROR: deletePhotoFromStorage")
             }
         }
     }
@@ -63,15 +61,15 @@ class DatabaseItems{
         let databaseUser = ref.child(uid)
         databaseUser.child("firstname").getData { error, dataSnapshot in
             if error != nil{
+                print("DATABASE ERROR: getUserFirstNameFromDatabase")
                 completion(error,nil)
-                
             }else{
                 let firstName = dataSnapshot?.value as? String ?? "Unknown"
                 completion(nil,firstName)
             }
             
         }
-
+        
     }
     
     public func getUserLastNameFromDatabase(uid:String, completion: @escaping ((Error?,String?)->Void)){
@@ -80,6 +78,7 @@ class DatabaseItems{
         let databaseUser = ref.child(uid)
         databaseUser.child("lastname").getData { error, dataSnapshot in
             if error != nil{
+                print("DATABASE ERROR: getUserLastNameFromDatabase")
                 completion(error,nil)
             }else{
                 let lastName = dataSnapshot?.value as? String ?? "Unknown"
@@ -94,6 +93,7 @@ class DatabaseItems{
         let databaseUser = ref.child(uid)
         databaseUser.child("isGoogleUser").getData { error, dataSnapshot in
             if error != nil{
+                print("DATABASE ERROR: getIsUserGoogleFromDatabase")
                 completion(error,nil)
             }else{
                 let isGoogleUser = dataSnapshot?.value as? Bool ?? false
@@ -108,13 +108,12 @@ class DatabaseItems{
         let databaseUser = ref.child(uid)
         databaseUser.child("urlPhotoGoogle").getData { error, dataSnapshot in
             if error != nil{
+                print("DATABASE ERROR: getGoogleUserPhotoFromDatabase")
                 completion(error,nil)
             }else{
-                let googlePhoto = dataSnapshot?.value as? String 
+                let googlePhoto = dataSnapshot?.value as? String
                 completion(nil,googlePhoto)
             }
         }
     }
-    
-    
 }

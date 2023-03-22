@@ -107,82 +107,57 @@ class User{
         let request = URLRequest(url: self.getphotoUrl()!)
         
         
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if error != nil{
-                    print(error)
-                }else{
-                    self.setProfilePhoto(image: (UIImage(data: data!)!))
-                    self.setIsUserGoogle(isUserGoogle: true)
-                    DispatchQueue.main.async {
-                        completion?()
-                    }
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if error != nil{
+                print("AUTH ERROR: setGooglePhoto")
+            }else{
+                self.setProfilePhoto(image: (UIImage(data: data!)!))
+                self.setIsUserGoogle(isUserGoogle: true)
+                DispatchQueue.main.async {
+                    completion?()
                 }
-            }.resume()
+            }
+        }.resume()
     }
     
     public func setCurrentUser(completion: (()->Void)? = nil){
         guard let user = Auth.auth().currentUser else{ return }
         self.setUid(uid: user.uid)
+        self.setEmail(email: (user.email) ?? "")
         
         storage.getUserFirstNameFromDatabase(uid: self.getUid()) { error, result in
-            if error != nil{
-                print(error)
-            }else{
+            if result != nil{
                 self.setUserFirstName(firstName: result!)
-                print("getted: " + AppDelegate.user.getFirstName())
-                
                 self.storage.getUserLastNameFromDatabase(uid: self.getUid()) { error, result in
-                    if error != nil{
-                        print(error)
-                    }else{
+                    if result != nil{
                         self.setLastName(lastName: result!)
-                        
-                        
-                        self.storage.getIsUserGoogleFromDatabase(uid: self.getUid()) { [self] error, TF in
-                            if error != nil{
-                                
-                            }else{
-                                self.setIsUserGoogle(isUserGoogle: TF!)
-                            }
+                        self.storage.getIsUserGoogleFromDatabase(uid: self.getUid()) { error, result in
+                            self.setIsUserGoogle(isUserGoogle: result ?? false)
                             
                             if self.getIsUserGoogle(){
                                 self.storage.getGoogleUserPhotoFromDatabase(uid: self.getUid()) { error, urlString in
-                                    if error != nil{
-                                        print(error)
-                                    }else{
-                                        self.setphotoUrl(photoUrl: URL(string: urlString ?? ""))
-                                    }
+                                    self.setphotoUrl(photoUrl: URL(string: urlString ?? ""))
                                 }
                             }
                             
-                        
-                        self.storage.getPhotoFromDatabase(uid: self.getUid()) { image, error in
-                            if error != nil{
-                                print(error)
-                            }else{
+                            
+                            self.storage.getPhotoFromDatabase(uid: self.getUid()) { image, error in
                                 if image != nil{
                                     self.profilePhoto = image!
                                 }else{
                                     if self.getIsUserGoogle() && self.getphotoUrl() != nil{
-                                        self.setGooglePhoto {
-                                            completion?()
-                                        }
+                                        self.setGooglePhoto()
                                     }else{
                                         self.profilePhoto = UIImage(named: "no photo")!
-                                        completion?()
                                     }
                                 }
+                                completion?()
                             }
-                            completion?()
                         }
-                    }
                     }
                 }
             }
         }
-        
-        
-        self.setEmail(email: (user.email)!)
     }
     
     
@@ -234,7 +209,7 @@ class User{
         self.setIsUserGoogle(isUserGoogle: false)
     }
     
-
+    
     // MARK: - validation Funcs
     
     public func isSignIn() -> Bool{
@@ -258,7 +233,7 @@ class User{
     
     public func isValidEmail() -> Bool{
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-
+        
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: self.email)
     }
