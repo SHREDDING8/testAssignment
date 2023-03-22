@@ -29,9 +29,9 @@ class User{
     private var isGoogleUser = false
     private var photoUrl:URL?
     
-    public var isGooglePhotoSet = false
+    private var isGooglePhotoSet = false
     
-    public var isLogin = false
+    private var isLogin = false
     
     // MARK: - set Methods
     
@@ -54,6 +54,7 @@ class User{
         self.uid = uid
     }
     public func setProfilePhoto(image:UIImage){
+        self.setIsUserGoogle(isUserGoogle: false)
         self.profilePhoto = image
         storage.addPhotoToDatabase(uid: self.getUid(), image: self.getProfilephoto())
     }
@@ -62,6 +63,12 @@ class User{
     }
     public func setphotoUrl(photoUrl:URL?){
         self.photoUrl = photoUrl
+    }
+    public func setIsGooglePhotoSet(isGooglePhotoSet:Bool){
+        self.isGooglePhotoSet = isGooglePhotoSet
+    }
+    public func setIsLogin(isLogin:Bool){
+        self.isLogin = isLogin
     }
     
     // MARK: - get Methods
@@ -88,6 +95,14 @@ class User{
         return self.photoUrl
     }
     
+    public func getIsGooglePhotoSet()->Bool{
+        return self.isGooglePhotoSet
+    }
+    
+    public func getIsLogin()->Bool{
+        return self.isLogin
+    }
+    
     public func setGooglePhoto(completion: (()->Void)? = nil){
         let request = URLRequest(url: self.getphotoUrl()!)
         
@@ -97,6 +112,7 @@ class User{
                     print(error)
                 }else{
                     self.setProfilePhoto(image: (UIImage(data: data!)!))
+                    self.setIsUserGoogle(isUserGoogle: true)
                     DispatchQueue.main.async {
                         completion?()
                     }
@@ -121,6 +137,25 @@ class User{
                     }else{
                         self.setLastName(lastName: result!)
                         
+                        
+                        self.storage.getIsUserGoogleFromDatabase(uid: self.getUid()) { [self] error, TF in
+                            if error != nil{
+                                
+                            }else{
+                                self.setIsUserGoogle(isUserGoogle: TF!)
+                            }
+                            
+                            if self.getIsUserGoogle(){
+                                self.storage.getGoogleUserPhotoFromDatabase(uid: self.getUid()) { error, urlString in
+                                    if error != nil{
+                                        print(error)
+                                    }else{
+                                        self.setphotoUrl(photoUrl: URL(string: urlString ?? ""))
+                                    }
+                                }
+                            }
+                            
+                        
                         self.storage.getPhotoFromDatabase(uid: self.getUid()) { image, error in
                             if error != nil{
                                 print(error)
@@ -140,6 +175,7 @@ class User{
                             }
                             completion?()
                         }
+                    }
                     }
                 }
             }
@@ -167,8 +203,7 @@ class User{
     // MARK: - Login
     
     public func logIn(completion:@escaping ((AuthDataResult?,Error?)->Void)) {
-        
-        self.isLogin = true
+        self.setIsLogin(isLogin: true)
         Auth.auth().signIn(withEmail: self.email!, password: self.password!) { result, error in
             if error != nil{
                 completion(nil,error)
@@ -178,7 +213,7 @@ class User{
         }
     }
     public func logInViaGoogle(completion:@escaping ((AuthDataResult?,Error?)->Void)){
-        self.isLogin = true
+        self.setIsLogin(isLogin: true)
         Auth.auth().signIn(with: crenedtial!) { result, error in
             if error != nil{
                 completion(nil,error)
@@ -196,6 +231,7 @@ class User{
     public func deletePhoto(){
         storage.deletePhotoFromStorage(uid: self.getUid())
         self.setProfilePhoto(image: UIImage(named: "no photo")!)
+        self.setIsUserGoogle(isUserGoogle: false)
     }
     
 

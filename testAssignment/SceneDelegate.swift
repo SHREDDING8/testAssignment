@@ -20,8 +20,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
-        //        guard let windowScene = (scene as? UIWindowScene) else { return }
-        //        self.window = UIWindow(windowScene: windowScene )
+//                guard let windowScene = (scene as? UIWindowScene) else { return }
+//                self.window = UIWindow(windowScene: windowScene )
+//                self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MenuUITabBarController")
+//                self.window?.makeKeyAndVisible()
+        
         
         Auth.auth().addStateDidChangeListener { [self] auth, user in
             
@@ -31,50 +34,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             else{
                 self.isUser = true
-                print("firstname: " + AppDelegate.user.getFirstName())
                 showSignInPage()
-                print("firstname 2: " + AppDelegate.user.getFirstName())
-//                AppDelegate.user.setCurrentUser()
-                print("firstname 3: " + AppDelegate.user.getFirstName())
             }
             
             guard let _ = (scene as? UIWindowScene) else { return }
         }
         
         func showSignInPage(){
-            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "SignInViewController") as! SignInViewController
-            vc.modalPresentationStyle = .fullScreen
+            vc.modalPresentationStyle = .overCurrentContext
             vc.modalTransitionStyle = .coverVertical
-            self.window?.rootViewController?.present(vc, animated: true)
-            if isUser && !AppDelegate.user.isLogin{
+            if !AppDelegate.user.getIsLogin(){
+                self.window?.rootViewController?.present(vc, animated: true)
+            }
+            if isUser && !AppDelegate.user.getIsLogin(){
                 vc.goToMainPage()
             }
         }
-        
-        func sceneDidDisconnect(_ scene: UIScene) {
-            // Called as the scene is being released by the system.
-            // This occurs shortly after the scene enters the background, or when its session is discarded.
-            // Release any resources associated with this scene that can be re-created the next time the scene connects.
-            // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
-        }
-        
-        func sceneDidBecomeActive(_ scene: UIScene) {
-            // Called when the scene has moved from an inactive state to an active state.
-            // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-        }
-        
-        func sceneWillResignActive(_ scene: UIScene) {
-            // Called when the scene will move from an active state to an inactive state.
-            // This may occur due to temporary interruptions (ex. an incoming phone call).
-        }
-        
-        func sceneWillEnterForeground(_ scene: UIScene) {
-            // Called as the scene transitions from the background to the foreground.
-            // Use this method to undo the changes made on entering the background.
-        }
-        
+                
         func sceneDidEnterBackground(_ scene: UIScene) {
             // Called as the scene transitions from the foreground to the background.
             // Use this method to save data, release shared resources, and store enough scene-specific state information

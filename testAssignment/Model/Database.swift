@@ -24,7 +24,6 @@ class DatabaseItems{
             "isGoogleUser":isGoogleUser,
             "urlPhotoGoogle": urlPhotoGoogle as Any
         ])
-        print("data added")
     }
     public func addPhotoToDatabase(uid:String,image:UIImage){
         let ref = storage.reference().child(uid)
@@ -102,4 +101,20 @@ class DatabaseItems{
             }
         }
     }
+    
+    public func getGoogleUserPhotoFromDatabase(uid:String, completion: @escaping ((Error?,String?)->Void)){
+        let ref = Database.database().reference().child("users")
+        
+        let databaseUser = ref.child(uid)
+        databaseUser.child("urlPhotoGoogle").getData { error, dataSnapshot in
+            if error != nil{
+                completion(error,nil)
+            }else{
+                let googlePhoto = dataSnapshot?.value as? String 
+                completion(nil,googlePhoto)
+            }
+        }
+    }
+    
+    
 }

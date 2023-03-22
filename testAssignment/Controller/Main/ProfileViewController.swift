@@ -91,6 +91,7 @@ class ProfileViewController: UIViewController {
     
    @objc fileprivate func tapChangePhoto(){
        let alert = UIAlertController(title: "Change photo", message: "Select how you want to upload photo", preferredStyle: .actionSheet)
+       
        let actionLibary = UIAlertAction(title: "Library", style: .default) { [self] _ in
            imagePicker.sourceType = .photoLibrary
            self.present(imagePicker, animated: true)
@@ -99,10 +100,9 @@ class ProfileViewController: UIViewController {
            imagePicker.sourceType = .camera
            self.present(imagePicker, animated: true)
        }
-       print(AppDelegate.user.getIsUserGoogle())
-       print(AppDelegate.user.getphotoUrl())
-       print(AppDelegate.user.getProfilephoto() == UIImage(named: "no photo")!)
-       if AppDelegate.user.getIsUserGoogle() && AppDelegate.user.getphotoUrl() != nil && AppDelegate.user.getProfilephoto() == UIImage(named: "no photo")! {
+       self.profilePhoto.image = AppDelegate.user.getProfilephoto()
+       
+       if AppDelegate.user.getIsUserGoogle() && AppDelegate.user.getphotoUrl() != nil && !AppDelegate.user.getIsGooglePhotoSet() {
            let uploadGooglePhotoAction = UIAlertAction(title: "Upload photo from google", style: .default) { _ in
                AppDelegate.user.setGooglePhoto {
                    self.profilePhoto.image = AppDelegate.user.getProfilephoto()
@@ -110,11 +110,13 @@ class ProfileViewController: UIViewController {
            }
            alert.addAction(uploadGooglePhotoAction)
        }
+       
        let actionDeletePhoto = UIAlertAction(title: "Delete Photo", style: .default) { [self] _ in
            self.profilePhoto.image = UIImage(named: "no photo")
            AppDelegate.user.deletePhoto()
        }
        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel)
+       
        alert.addAction(actionLibary)
        alert.addAction(actionCamera)
        alert.addAction(actionCancel)

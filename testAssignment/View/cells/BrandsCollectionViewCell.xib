@@ -24,7 +24,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PgH-GV-nwl">
                         <rect key="frame" x="0.0" y="0.0" width="133" height="169"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puma" translatesAutoresizingMaskIntoConstraints="NO" id="Wq5-0d-Tvd">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Puma" translatesAutoresizingMaskIntoConstraints="NO" id="Wq5-0d-Tvd">
                                 <rect key="frame" x="0.0" y="0.0" width="133" height="169"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="169" id="H8K-Ib-x1b"/>
@@ -67,6 +67,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="puma" width="333" height="333"/>
+        <image name="Puma" width="666.66668701171875" height="443.33334350585938"/>
     </resources>
 </document>
