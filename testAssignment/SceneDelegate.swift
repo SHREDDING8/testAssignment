@@ -43,13 +43,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         func showSignInPage(){
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "SignInViewController") as! SignInViewController
-            vc.modalPresentationStyle = .overCurrentContext
+            vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .coverVertical
             if !AppDelegate.user.getIsLogin(){
-                self.window?.rootViewController?.present(vc, animated: true)
-            }
-            if isUser && !AppDelegate.user.getIsLogin(){
-                vc.goToMainPage()
+                DispatchQueue.main.async { [self] in
+                    self.window?.rootViewController?.present(vc, animated: true)
+                    if isUser{
+                        vc.goToMainPage()
+                    }
+                }
             }
         }
                 
@@ -61,8 +63,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Save changes in the application's managed object context when the application transitions to the background.
             (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
         }
-        
-        
     }
     
 }

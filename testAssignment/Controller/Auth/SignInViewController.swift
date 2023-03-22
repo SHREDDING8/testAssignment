@@ -159,7 +159,6 @@ class SignInViewController: UIViewController {
             
             self.loadPage.isHidden = true
             self.activityIndicator.stopAnimating()
-            
             self.dismiss(animated: true)
         }
     }
