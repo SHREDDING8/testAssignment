@@ -56,9 +56,12 @@ class ProfileViewController: UIViewController {
         
         self.changePhotoButton.isUserInteractionEnabled = true
         self.profilePhoto.isUserInteractionEnabled = true
-        let gestureChangePhoto = UITapGestureRecognizer(target: self, action: #selector(tapChangePhoto))
-        changePhotoButton.addGestureRecognizer(gestureChangePhoto)
-        self.profilePhoto.addGestureRecognizer(gestureChangePhoto)
+        let gestureChangePhotoByTapChangePhoto = UITapGestureRecognizer(target: self, action: #selector(tapChangePhoto))
+        
+        let gestureChangePhotoByTapPhoto = UITapGestureRecognizer(target: self, action: #selector(tapChangePhoto))
+        
+        self.profilePhoto.addGestureRecognizer(gestureChangePhotoByTapPhoto)
+        self.changePhotoButton.addGestureRecognizer(gestureChangePhotoByTapChangePhoto)
         
         setCornerRadius(views: [profilePhoto], cornerRadius: 30.0)
     }

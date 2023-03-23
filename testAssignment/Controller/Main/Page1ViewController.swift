@@ -232,7 +232,7 @@ extension Page1ViewController:UITextFieldDelegate{
                             
                             self.dropDownMenu.reloadData()
                             
-                            var height = words.count > 6 ? 200 : CGFloat(45 * words.count)
+                            let height = words.count > 6 ? 200 : CGFloat(45 * words.count)
                             
                             UIView.transition(with: self.dropDownMenu, duration: 0.3) {
                                 self.dropDownMenuHeightConstaint.constant = height
