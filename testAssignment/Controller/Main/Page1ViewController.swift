@@ -202,9 +202,9 @@ extension Page1ViewController:UITextFieldDelegate{
         textField.resignFirstResponder()
         
         UIView.transition(with: self.dropDownMenu, duration: 0.3) {
-            self.dropDownMenu.layer.opacity = 0
+            self.dropDownMenuHeightConstaint.constant = 0
+            self.view.layoutIfNeeded()
         }
-        
         
         return true
 
