@@ -106,6 +106,7 @@ class ProfileViewController: UIViewController {
            let uploadGooglePhotoAction = UIAlertAction(title: "Upload photo from google", style: .default) { _ in
                AppDelegate.user.setGooglePhoto {
                    self.profilePhoto.image = AppDelegate.user.getProfilephoto()
+                   AppDelegate.user.setIsGooglePhotoSet(isGooglePhotoSet: true)
                }
            }
            alert.addAction(uploadGooglePhotoAction)
@@ -129,6 +130,7 @@ class ProfileViewController: UIViewController {
         do {
             try firebaseAuth.signOut()
             self.tabBarController?.selectedIndex = 0
+            AppDelegate.user.setIsLogin(isLogin: false)
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }

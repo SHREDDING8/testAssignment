@@ -15,6 +15,9 @@ class FlashScaleCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var categoryView: UIView!
     @IBOutlet weak var category: UILabel!
     
+    @IBOutlet weak var discountView: UIView!
+    
+    @IBOutlet weak var discount: UILabel!
     
     @IBOutlet weak var name: UILabel!
     
@@ -30,7 +33,10 @@ class FlashScaleCollectionViewCell: UICollectionViewCell {
         // Initialization code
         
         categoryView.layer.masksToBounds = true
+        discountView.layer.masksToBounds = true
+        
         categoryView.layer.cornerRadius = categoryView.frame.height / 2 - 1
+        discountView.layer.cornerRadius = discountView.frame.height / 2 - 1
         
         self.image.layer.masksToBounds = true
         self.image.layer.cornerRadius = 30

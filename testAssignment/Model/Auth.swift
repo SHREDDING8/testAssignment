@@ -54,7 +54,7 @@ class User{
         self.uid = uid
     }
     public func setProfilePhoto(image:UIImage){
-        self.setIsUserGoogle(isUserGoogle: false)
+        self.setIsGooglePhotoSet(isGooglePhotoSet: false)
         self.profilePhoto = image
         storage.addPhotoToDatabase(uid: self.getUid(), image: self.getProfilephoto())
     }
@@ -144,14 +144,17 @@ class User{
                             self.storage.getPhotoFromDatabase(uid: self.getUid()) { image, error in
                                 if image != nil{
                                     self.profilePhoto = image!
+                                    completion?()
                                 }else{
                                     if self.getIsUserGoogle() && self.getphotoUrl() != nil{
-                                        self.setGooglePhoto()
+                                        self.setGooglePhoto {
+                                            completion?()
+                                        }
                                     }else{
                                         self.profilePhoto = UIImage(named: "no photo")!
+                                        completion?()
                                     }
                                 }
-                                completion?()
                             }
                         }
                     }
@@ -200,13 +203,12 @@ class User{
             }
         }
     }
-    
     // MARK: - Delete or modify
     
     public func deletePhoto(){
         storage.deletePhotoFromStorage(uid: self.getUid())
         self.setProfilePhoto(image: UIImage(named: "no photo")!)
-        self.setIsUserGoogle(isUserGoogle: false)
+        self.setIsGooglePhotoSet(isGooglePhotoSet: false)
     }
     
     
@@ -226,7 +228,6 @@ class User{
                 }else{
                     completion(false)
                 }
-                
             }
         }
     }

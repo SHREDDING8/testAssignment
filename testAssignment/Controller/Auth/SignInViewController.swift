@@ -153,13 +153,22 @@ class SignInViewController: UIViewController {
         print("firstname 6: " + AppDelegate.user.getFirstName())
         
         AppDelegate.user.setCurrentUser {
-            UIView.transition(with: self.loadPage, duration: 0.3,options: .transitionCrossDissolve) {
-                self.loadPage.layer.opacity = 0
-            }
-            
-            self.loadPage.isHidden = true
-            self.activityIndicator.stopAnimating()
-            self.dismiss(animated: true)
+                ApiManager.loadLatest {
+                        ApiManager.loadFlashSale {
+                            DispatchQueue.main.async {
+                                self.dismiss(animated: true) {
+                                    
+                                    UIView.transition(with: self.loadPage, duration: 1,options: .transitionCrossDissolve) {
+                                            self.loadPage.layer.opacity = 0
+                                        }
+                                        self.loadPage.isHidden = true
+                                        self.activityIndicator.stopAnimating()
+                                }
+                                
+                            
+                        }
+                    }
+                }
         }
     }
     
@@ -217,7 +226,6 @@ class SignInViewController: UIViewController {
             AppDelegate.user.logInViaGoogle { [self] resultLogin, errorlogIn in
                 if error != nil{
                 }else{
-                    AppDelegate.user.setIsUserGoogle(isUserGoogle: true)
                     self.goToMainPage()
                 }
             }

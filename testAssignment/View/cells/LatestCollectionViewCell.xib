@@ -26,10 +26,6 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play station" translatesAutoresizingMaskIntoConstraints="NO" id="06b-cX-SWB">
                                 <rect key="frame" x="0.0" y="0.0" width="133" height="169"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="169" id="74t-uQ-BYG"/>
-                                    <constraint firstAttribute="width" constant="133" id="nOj-bb-goD"/>
-                                </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3rZ-TX-v3C">
                                 <rect key="frame" x="7" y="90" width="40.666666666666664" height="12"/>
@@ -81,10 +77,12 @@
                             <constraint firstItem="HcN-JY-abg" firstAttribute="leading" secondItem="BZ8-Io-jzI" secondAttribute="leading" id="TZW-Sv-xEC"/>
                             <constraint firstItem="06b-cX-SWB" firstAttribute="top" secondItem="gVF-m2-Kga" secondAttribute="top" id="WHk-vc-oiQ"/>
                             <constraint firstItem="06b-cX-SWB" firstAttribute="trailing" secondItem="ExO-Sd-wFp" secondAttribute="trailing" constant="5" id="YqE-pr-3rk"/>
+                            <constraint firstAttribute="width" constant="133" id="adW-ZH-fNx"/>
                             <constraint firstItem="3rZ-TX-v3C" firstAttribute="top" secondItem="06b-cX-SWB" secondAttribute="top" constant="90" id="dKN-QT-aM0"/>
                             <constraint firstItem="06b-cX-SWB" firstAttribute="trailing" secondItem="BZ8-Io-jzI" secondAttribute="trailing" constant="40" id="eie-eT-hUX"/>
                             <constraint firstItem="BZ8-Io-jzI" firstAttribute="leading" secondItem="06b-cX-SWB" secondAttribute="leading" constant="7" id="nus-gi-0dF"/>
                             <constraint firstAttribute="bottom" secondItem="06b-cX-SWB" secondAttribute="bottom" id="w0X-5E-HaU"/>
+                            <constraint firstAttribute="height" constant="169" id="zVP-ue-E8w"/>
                         </constraints>
                     </view>
                 </subviews>

@@ -14,10 +14,17 @@ class Page1ViewController: UIViewController {
     let categories = ["Phones","Headphones","Games","Cars","Furniture","Kids"]
     let brands = ["Nike","Puma","Mersedes","iPhone"]
     
+    var timeStartEditing:Date?
+    
+    var searchWords:[String] = []
+    
+    var dropDownMenuHeightConstaint:NSLayoutConstraint!
+    
     @IBOutlet weak var navigationBar: NavigationBar!
     
     @IBOutlet weak var categoryCollectionView: UICollectionView!
     
+    @IBOutlet weak var dropDownMenu: UITableView!
     
     @IBOutlet weak var latestCollectionView: UICollectionView!
     
@@ -48,10 +55,11 @@ class Page1ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear")
         navigationBar.image.image = AppDelegate.user.getProfilephoto()
+        self.latestCollectionView.reloadData()
+        self.flashSaleCollectionView.reloadData()
     }
-    
-    
     // MARK: - configuration
     
     fileprivate func configureViews(){
@@ -74,6 +82,17 @@ class Page1ViewController: UIViewController {
         self.flashSaleCollectionView.dataSource = self
         self.brandsCollectionView.delegate = self
         self.brandsCollectionView.dataSource = self
+        
+        searchField.delegate = self
+        dropDownMenu.layer.masksToBounds = true
+        dropDownMenu.layer.cornerRadius = 10
+        dropDownMenu.translatesAutoresizingMaskIntoConstraints = false
+        
+        dropDownMenuHeightConstaint = NSLayoutConstraint(item: dropDownMenu!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        
+        dropDownMenuHeightConstaint.isActive = true
+        
+        
         
     }
     
@@ -126,9 +145,9 @@ extension Page1ViewController:UICollectionViewDelegate,UICollectionViewDataSourc
         if collectionView == self.categoryCollectionView{
             return 6
         }else if collectionView == self.latestCollectionView{
-            return 6
+            return ApiManager.latestItems?.count ?? 0
         } else if collectionView == self.flashSaleCollectionView{
-            return 6
+            return ApiManager.flashSaleItems!.count
         }else if collectionView == self.brandsCollectionView{
             return 4
         }
@@ -141,21 +160,116 @@ extension Page1ViewController:UICollectionViewDelegate,UICollectionViewDataSourc
             cell?.categoryTitle.text = categories[indexPath.row]
             cell?.caterogyImage.image = UIImage(named: categories[indexPath.row])
             return cell ?? UICollectionViewCell()
+            
         }else if (collectionView == self.latestCollectionView){
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LatestCollectionViewCell", for: indexPath) as? LatestCollectionViewCell
-            return cell ?? UICollectionViewCell()
+            
+            cell?.name.text = ApiManager.latestItems![indexPath.row].getName()
+            cell?.category.text = ApiManager.latestItems![indexPath.row].getcategory()
+            cell?.price.text = "$ " + ApiManager.latestItems![indexPath.row].getPrice()
+            cell?.image.image = ApiManager.latestItems![indexPath.row].getImage(index: 0)
+
+            
+            return cell!
+            
         } else if collectionView == self.flashSaleCollectionView{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FlashScaleCollectionViewCell", for: indexPath) as? FlashScaleCollectionViewCell
-            return cell ?? UICollectionViewCell()
+            
+            cell?.name.text = ApiManager.flashSaleItems![indexPath.row].getName()
+            cell?.category.text = ApiManager.flashSaleItems![indexPath.row].getcategory()
+            cell?.price.text = "$ " + ApiManager.flashSaleItems![indexPath.row].getPrice()
+            cell?.image.image = ApiManager.flashSaleItems![indexPath.row].getImage(index: 0)
+            cell?.discount.text = ApiManager.flashSaleItems![indexPath.row].getDiscount() + "% off"
+            
+            return cell!
         }else if collectionView == self.brandsCollectionView{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandsCollectionViewCell", for: indexPath) as? BrandsCollectionViewCell
             
             cell?.image.image = UIImage(named: brands[indexPath.row])
             cell?.name.text = brands[indexPath.row]
-            return cell ?? UICollectionViewCell()
+            return cell!
         }
         
         
         return UICollectionViewCell()
     }
+}
+
+
+// MARK: - Search Delegate
+extension Page1ViewController:UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        UIView.transition(with: self.dropDownMenu, duration: 0.3) {
+            self.dropDownMenu.layer.opacity = 0
+        }
+        
+        
+        return true
+
+    }
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        self.timeStartEditing = .now
+        
+        UIView.transition(with: self.dropDownMenu, duration: 0.3) {
+            self.dropDownMenuHeightConstaint.constant = 0
+            self.view.layoutIfNeeded()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [self] in
+            var now = Date()
+            now = .now
+            if Double(now.timeIntervalSince(timeStartEditing!)) > 1.0{
+                
+                ApiManager.loadSearch(inputWord: textField.text ?? "") { words in
+                    DispatchQueue.main.async {
+                        if words.count > 0{
+                            self.searchWords = words
+                            
+                            self.dropDownMenu.reloadData()
+                            
+                            var height = words.count > 6 ? 200 : CGFloat(45 * words.count)
+                            
+                            UIView.transition(with: self.dropDownMenu, duration: 0.3) {
+                                self.dropDownMenuHeightConstaint.constant = height
+                                self.view.layoutIfNeeded()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+}
+
+// MARK: - tableView
+
+extension Page1ViewController:UITableViewDelegate,UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchWords.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        
+        var conf = cell.defaultContentConfiguration()
+        conf.text = searchWords[indexPath.row]
+        
+        cell.contentConfiguration = conf
+        cell.backgroundColor = .clear
+        return cell
+    }
+    
+    
 }
