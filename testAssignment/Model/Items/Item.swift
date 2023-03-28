@@ -15,10 +15,10 @@ enum ItemCategory:Int{
 class Item{
     private var name: String
     private var description:String?
-    private var category:String
+    private var category:String?
     private var price: Double
     private var images:[UIImage]
-    private var itemCategory:ItemCategory
+    private var itemCategory:ItemCategory?
     private var discount:Int?
     
     private var rating:Double?
@@ -27,7 +27,7 @@ class Item{
     
     
     public func getcategory()->String{
-        return self.category
+        return self.category ?? ""
     }
     public func getName()->String{
         return self.name
@@ -35,12 +35,34 @@ class Item{
     public func getPrice()->String{
         return String(self.price).replacingOccurrences(of: ".", with: ",")
     }
+    public func getNumberPrice()->Double{
+        return self.price
+    }
     public func getImage(index:Int)->UIImage{
         return self.images[index]
     }
     public func getDiscount()->String{
         return String(self.discount!)
     }
+    
+    public func getDescription()->String{
+        return self.description!
+    }
+    
+    public func getRating()->String{
+        return String(self.rating!)
+    }
+    
+    public func getNumberOfViews()->String{
+        return String(self.numberOfReviews!)
+    }
+    public func getNumberOfImages()->Int{
+        return self.images.count
+    }
+    public func getColors()->[UIColor]{
+        return self.colors ?? []
+    }
+    
     
     init(category: String, name: String, price: Int, images: [UIImage],itemCategory:ItemCategory) {
         self.category = category
@@ -57,5 +79,15 @@ class Item{
         self.images = images
         self.itemCategory = itemCategory
         self.discount = discount
+    }
+    
+    init(name: String, description: String, rating:Double, numberOfReviews:Int, price: Double, colors:[UIColor], images:[UIImage]){
+        self.name = name
+        self.description = description
+        self.rating = rating
+        self.numberOfReviews = numberOfReviews
+        self.price = price
+        self.colors = colors
+        self.images = images
     }
 }

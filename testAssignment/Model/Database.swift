@@ -62,6 +62,7 @@ class DatabaseItems{
         databaseUser.child("firstname").getData { error, dataSnapshot in
             if error != nil{
                 print("DATABASE ERROR: getUserFirstNameFromDatabase")
+                print(error, StorageErrorCode(rawValue: error!._code))
                 completion(error,nil)
             }else{
                 let firstName = dataSnapshot?.value as? String ?? "Unknown"

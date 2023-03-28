@@ -16,27 +16,34 @@ class ApiManager{
     
     public static let searchUrl = URL(string: "https://run.mocky.io/v3/4c9cd822-9479-4509-803d-63197e5a9e19")
     
+    public static let page2 = URL(string: "https://run.mocky.io/v3/f7f99d04-4971-45d5-92e0-70333383c239")
+    
+    public static var page2Items:[Item]? = []
+    
     static public func loadLatest(completion:@escaping (()->Void) ){
         self.latestItems = []
         let request = URLRequest(url: latestUrl)
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             guard error == nil, data != nil else{
                 return
-                
             }
-                if let items = try? JSONDecoder().decode(Latest.self, from: data!).latest{
-                    for index in 0..<items.count{
-                            self.loadPhoto(stringUrl: items[index].imageURL) { image in
-                                    let newItem = Item(category: items[index].category, name: items[index].name, price: items[index].price, images: [image], itemCategory: .latest)
-                                    latestItems?.append(newItem)
-                                if index == items.count - 1 {
-                                    completion()
-                                }
+            if let items = try? JSONDecoder().decode(Latest.self, from: data!).latest{
+                for index in 0..<items.count{
+                    self.loadPhoto(stringUrl: items[index].imageURL) { image in
+                        let newItem = Item(category: items[index].category, name: items[index].name, price: items[index].price, images: [image], itemCategory: .latest)
+                        latestItems?.append(newItem)
+                        print(123)
+                        
+                        if index == items.count - 1 {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1) ) {
+                                completion()
                             }
-                            
                         }
+                    }
+                    
                 }
-                
+            }
+            
         }).resume()
     }
     
@@ -52,18 +59,17 @@ class ApiManager{
             
             if let items = try? JSONDecoder().decode(FlashSale.self, from: data!).flashSale{
                 for index in 0..<items.count{
-                        self.loadPhoto(stringUrl: items[index].imageURL) { image in
-                            let newItem = Item(category: items[index].category, name: items[index].name, price: items[index].price, images: [image], discount: items[index].discount, itemCategory: .flashSale)
-                                flashSaleItems?.append(newItem)
-                            
-                            
-                                if index == items.count - 1 {
-                                    DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 300)) {
-                                    completion()
-                                }
-                            }
+                    self.loadPhoto(stringUrl: items[index].imageURL) { image in
+                        
+                        let newItem = Item(category: items[index].category, name: items[index].name, price: items[index].price, images: [image], discount: items[index].discount, itemCategory: .flashSale)
+                        flashSaleItems?.append(newItem)
+                        
+                        
+                        if index == items.count - 1 {
+                            completion()
                         }
                     }
+                }
             }
         }).resume()
     }
@@ -95,34 +101,71 @@ class ApiManager{
     static public func loadSearch(inputWord:String,completion:@escaping (([String])->Void)){
         
         let request = URLRequest(url: self.searchUrl!)
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                guard error == nil, data != nil else{
-                    return
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard error == nil, data != nil else{
+                return
+                
+            }
+            
+            
+            if let httpResponse = response as? HTTPURLResponse{
+                if httpResponse.statusCode != 200{
+                    print("loadSearch ERROR:" + String(httpResponse.statusCode))
+                }else{
                     
+                    if let words = try? JSONDecoder().decode(Search.self, from: data!).words{
+                        var trueWords:[String] = []
+                        
+                        for word in words{
+                            if word.localizedStandardContains(inputWord){
+                                trueWords.append(word)
+                            }
+                        }
+                        completion(trueWords)
+                    }
+                }
+            }
+            
+        }.resume()
+        
+    }
+    
+    
+    static public func loadPage2(completion:@escaping (()->Void)){
+        self.page2Items = []
+        let request = URLRequest(url: self.page2!)
+        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+            guard error == nil, data != nil else{
+                return
+            }
+            
+            if let item = try? JSONDecoder().decode(Page2.self, from: data!){
+                var colors:[UIColor] = []
+                var images:[UIImage] = []
+                 
+                for color in item.colors{
+                    colors.append(UIColor(hex: color)!)
                 }
                 
-                    
-                if let httpResponse = response as? HTTPURLResponse{
-                    if httpResponse.statusCode != 200{
-                            print("loadSearch ERROR:" + String(httpResponse.statusCode))
-                        }else{
+                for index in 0..<item.imageUrls.count{
+                    self.loadPhoto(stringUrl: item.imageUrls[index]) { image in
+                        images.append(image)
+                        
+                        if index == item.imageUrls.count - 1 {
                             
-                            if let words = try? JSONDecoder().decode(Search.self, from: data!).words{
-                                var trueWords:[String] = []
-                                
-                                for word in words{
-                                    if word.localizedStandardContains(inputWord){
-                                        trueWords.append(word)
-                                    }
-                                }
-                                completion(trueWords)
+                            let newItem = Item(name: item.name , description: item.description, rating: item.rating, numberOfReviews: item.numberOfReviews, price: item.price, colors: colors, images: images)
+                            
+                            self.page2Items?.append(newItem)
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1) ) {
+                                completion()
                             }
                         }
                     }
-                    
-            }.resume()
-        
-        
-        
+                }
+            }
+        }).resume()
     }
+    
 }

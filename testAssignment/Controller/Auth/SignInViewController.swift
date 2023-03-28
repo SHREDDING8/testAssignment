@@ -12,6 +12,10 @@ import FirebaseAuth
 
 class SignInViewController: UIViewController {
     
+    override var preferredStatusBarStyle:UIStatusBarStyle{
+        return .darkContent
+    }
+    
     // MARK: - Outlets
     
     @IBOutlet weak var firstName: UITextField!
@@ -44,6 +48,8 @@ class SignInViewController: UIViewController {
     // MARK: - Configuration
     
     fileprivate func configureViews(){
+    
+        
         let cornerRadius = 15.0
         setCornerRadius(views: [firstName,secondName,email,signInButton], cornerRadius: cornerRadius)
         setPlaceholder(textFields: [firstName,secondName,email], placeholders: ["First name","Last name","Email"])
@@ -150,14 +156,13 @@ class SignInViewController: UIViewController {
         
         self.activityIndicator.isHidden = false
         self.activityIndicator.startAnimating()
-        print("firstname 6: " + AppDelegate.user.getFirstName())
         
         AppDelegate.user.setCurrentUser {
                 ApiManager.loadLatest {
                         ApiManager.loadFlashSale {
                             DispatchQueue.main.async {
                                 self.dismiss(animated: true) {
-                                    
+
                                     UIView.transition(with: self.loadPage, duration: 1,options: .transitionCrossDissolve) {
                                             self.loadPage.layer.opacity = 0
                                         }

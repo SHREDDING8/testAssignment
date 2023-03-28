@@ -11,6 +11,11 @@ import FirebaseAuth
 
 class ProfileViewController: UIViewController {
     
+    override var preferredStatusBarStyle:UIStatusBarStyle{
+        return .darkContent
+    }
+    
+    
     // MARK: - variables
     
     let imagesTableView = ["restore","help","logOut"]
@@ -125,6 +130,7 @@ class ProfileViewController: UIViewController {
        alert.addAction(actionCamera)
        alert.addAction(actionCancel)
        alert.addAction(actionDeletePhoto)
+       
        self.present(alert, animated: true)
     }
     

@@ -57,6 +57,9 @@
 		EEC38FA229C1DD1500648688 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC38FA129C1DD1500648688 /* SceneDelegate.swift */; };
 		EEC38FA429C1DD1500648688 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC38FA329C1DD1500648688 /* SignInViewController.swift */; };
 		EEC38FAA29C1DD1500648688 /* testAssignment.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EEC38FA829C1DD1500648688 /* testAssignment.xcdatamodeld */; };
+		EEC69C9C29D08C080039ECC4 /* Page2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC69C9B29D08C080039ECC4 /* Page2ViewController.swift */; };
+		EED4FEA829D35CB6006AD197 /* Page2JsonStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED4FEA729D35CB6006AD197 /* Page2JsonStruct.swift */; };
+		EED4FEAA29D36112006AD197 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED4FEA929D36112006AD197 /* UIColorExtension.swift */; };
 		EEE5003229CB4A9D00052DCE /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE5003129CB4A9C00052DCE /* Item.swift */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +116,9 @@
 		EEC38FAB29C1DD1600648688 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EEC38FAE29C1DD1600648688 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EEC38FB029C1DD1600648688 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EEC69C9B29D08C080039ECC4 /* Page2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page2ViewController.swift; sourceTree = "<group>"; };
+		EED4FEA729D35CB6006AD197 /* Page2JsonStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page2JsonStruct.swift; sourceTree = "<group>"; };
+		EED4FEA929D36112006AD197 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		EEE5003129CB4A9C00052DCE /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -173,6 +179,7 @@
 				EE51254729C51AF3005FC467 /* ProfileViewController.swift */,
 				EE51254B29C64869005FC467 /* MenuUITabBarController.swift */,
 				EE40E34729C7B45D007AAEE7 /* Page1ViewController.swift */,
+				EEC69C9B29D08C080039ECC4 /* Page2ViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -198,6 +205,7 @@
 				EE56910B29C8A9E600986E5B /* cells */,
 				EE6C9D6B29C8894F00C7E0F5 /* NavigationBar.xib */,
 				EE6C9D6D29C889FC00C7E0F5 /* NavigationBar.swift */,
+				EED4FEA929D36112006AD197 /* UIColorExtension.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -208,6 +216,7 @@
 				EE735FD429CB35F300930CB3 /* LatestJsonStruct.swift */,
 				EE3DCFEF29CB690300B395E1 /* FlashSaleJsonStruct.swift */,
 				EE16371C29CC5C2F00E81D11 /* SearchJsonStruct.swift */,
+				EED4FEA729D35CB6006AD197 /* Page2JsonStruct.swift */,
 			);
 			path = "Json Structs";
 			sourceTree = "<group>";
@@ -444,11 +453,14 @@
 				EEABF30629C37107000F9508 /* LoginViewController.swift in Sources */,
 				EE56910E29C8AA1700986E5B /* CategoryCollectionViewCell.swift in Sources */,
 				EE735FD529CB35F300930CB3 /* LatestJsonStruct.swift in Sources */,
+				EED4FEAA29D36112006AD197 /* UIColorExtension.swift in Sources */,
 				EE735FD829CB362800930CB3 /* ApiManager.swift in Sources */,
 				EEC38FA229C1DD1500648688 /* SceneDelegate.swift in Sources */,
 				EEB83D1729C90F8800663260 /* BrandsCollectionViewCell.swift in Sources */,
+				EEC69C9C29D08C080039ECC4 /* Page2ViewController.swift in Sources */,
 				EEE5003229CB4A9D00052DCE /* Item.swift in Sources */,
 				EE3DCFF029CB690300B395E1 /* FlashSaleJsonStruct.swift in Sources */,
+				EED4FEA829D35CB6006AD197 /* Page2JsonStruct.swift in Sources */,
 				EE51254429C4DEC3005FC467 /* Auth.swift in Sources */,
 				EE40E34629C7A8AD007AAEE7 /* Database.swift in Sources */,
 				EE40E34829C7B45D007AAEE7 /* Page1ViewController.swift in Sources */,

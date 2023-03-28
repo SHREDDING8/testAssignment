@@ -9,6 +9,11 @@ import UIKit
 
 class Page1ViewController: UIViewController {
     
+    override var preferredStatusBarStyle:UIStatusBarStyle{
+        return .darkContent
+    }
+    
+        
     // MARK: - Variables
     
     let categories = ["Phones","Headphones","Games","Cars","Furniture","Kids"]
@@ -55,11 +60,11 @@ class Page1ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear")
         navigationBar.image.image = AppDelegate.user.getProfilephoto()
         self.latestCollectionView.reloadData()
         self.flashSaleCollectionView.reloadData()
     }
+    
     // MARK: - configuration
     
     fileprivate func configureViews(){
@@ -129,22 +134,26 @@ class Page1ViewController: UIViewController {
     }
     
     
-    /*
+    
      // MARK: - Navigation
      
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    fileprivate func goToPage2(){
+        
+        let Page2ViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Page2ViewController")
+        
+        self.navigationController?.pushViewController(Page2ViewController, animated: true)
+    }
     
 }
+
+// MARK: - UICollectionViewDelegate
+
 extension Page1ViewController:UICollectionViewDelegate,UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.categoryCollectionView{
             return 6
         }else if collectionView == self.latestCollectionView{
+            print(ApiManager.latestItems?.count ?? 0)
             return ApiManager.latestItems?.count ?? 0
         } else if collectionView == self.flashSaleCollectionView{
             return ApiManager.flashSaleItems!.count
@@ -184,14 +193,16 @@ extension Page1ViewController:UICollectionViewDelegate,UICollectionViewDataSourc
             return cell!
         }else if collectionView == self.brandsCollectionView{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandsCollectionViewCell", for: indexPath) as? BrandsCollectionViewCell
-            
             cell?.image.image = UIImage(named: brands[indexPath.row])
             cell?.name.text = brands[indexPath.row]
             return cell!
         }
         
-        
         return UICollectionViewCell()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        goToPage2()
     }
 }
 
@@ -249,6 +260,7 @@ extension Page1ViewController:UITextFieldDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        self.tabBarItem.badgeValue = "123"
     }
 
 }
@@ -265,7 +277,7 @@ extension Page1ViewController:UITableViewDelegate,UITableViewDataSource{
         
         var conf = cell.defaultContentConfiguration()
         conf.text = searchWords[indexPath.row]
-        
+        conf.textProperties.color = .black
         cell.contentConfiguration = conf
         cell.backgroundColor = .clear
         return cell
