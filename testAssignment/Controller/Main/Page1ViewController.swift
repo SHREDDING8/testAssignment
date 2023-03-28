@@ -52,6 +52,9 @@ class Page1ViewController: UIViewController {
     }()
     
     @IBOutlet weak var searchField: UITextField!
+    
+    
+    // MARK: - life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
@@ -65,7 +68,7 @@ class Page1ViewController: UIViewController {
         self.flashSaleCollectionView.reloadData()
     }
     
-    // MARK: - configuration
+    // MARK: - configuration (configureViews)
     
     fileprivate func configureViews(){
         setCornerRadius(views: [searchField], cornerRadius: 15.0)
@@ -96,25 +99,7 @@ class Page1ViewController: UIViewController {
         dropDownMenuHeightConstaint = NSLayoutConstraint(item: dropDownMenu!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         
         dropDownMenuHeightConstaint.isActive = true
-        
-        
-        
-    }
-    
-    fileprivate func registerNib(){
-        let nibCategory = UINib(nibName: "CategoryCollectionViewCell", bundle: nil)
-        self.categoryCollectionView.register(nibCategory, forCellWithReuseIdentifier: "CategoryCollectionViewCell")
-        
-        let nibLatest = UINib(nibName: "LatestCollectionViewCell", bundle: nil)
-        self.latestCollectionView.register(nibLatest, forCellWithReuseIdentifier: "LatestCollectionViewCell")
-        
-        let nibFlashSale = UINib(nibName: "FlashScaleCollectionViewCell", bundle: nil)
-        self.flashSaleCollectionView.register(nibFlashSale, forCellWithReuseIdentifier: "FlashScaleCollectionViewCell")
-        
-        let nibBranbs = UINib(nibName: "BrandsCollectionViewCell", bundle: nil)
-        self.brandsCollectionView.register(nibBranbs, forCellWithReuseIdentifier: "BrandsCollectionViewCell")
-        
-        
+
     }
     
     fileprivate func setCornerRadius(views:[UIView],cornerRadius:Double){
@@ -133,27 +118,40 @@ class Page1ViewController: UIViewController {
         }
     }
     
+    // MARK: - registerNib
+    fileprivate func registerNib(){
+        let nibCategory = UINib(nibName: "CategoryCollectionViewCell", bundle: nil)
+        self.categoryCollectionView.register(nibCategory, forCellWithReuseIdentifier: "CategoryCollectionViewCell")
+        
+        let nibLatest = UINib(nibName: "LatestCollectionViewCell", bundle: nil)
+        self.latestCollectionView.register(nibLatest, forCellWithReuseIdentifier: "LatestCollectionViewCell")
+        
+        let nibFlashSale = UINib(nibName: "FlashScaleCollectionViewCell", bundle: nil)
+        self.flashSaleCollectionView.register(nibFlashSale, forCellWithReuseIdentifier: "FlashScaleCollectionViewCell")
+        
+        let nibBranbs = UINib(nibName: "BrandsCollectionViewCell", bundle: nil)
+        self.brandsCollectionView.register(nibBranbs, forCellWithReuseIdentifier: "BrandsCollectionViewCell")
+
+    }
     
     
      // MARK: - Navigation
      
     fileprivate func goToPage2(){
-        
         let Page2ViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Page2ViewController")
-        
         self.navigationController?.pushViewController(Page2ViewController, animated: true)
     }
-    
 }
 
 // MARK: - UICollectionViewDelegate
 
 extension Page1ViewController:UICollectionViewDelegate,UICollectionViewDataSource{
+    
+    // MARK: - numberOfItemsInSection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.categoryCollectionView{
             return 6
         }else if collectionView == self.latestCollectionView{
-            print(ApiManager.latestItems?.count ?? 0)
             return ApiManager.latestItems?.count ?? 0
         } else if collectionView == self.flashSaleCollectionView{
             return ApiManager.flashSaleItems!.count
@@ -163,6 +161,7 @@ extension Page1ViewController:UICollectionViewDelegate,UICollectionViewDataSourc
         return 0
     }
     
+    // MARK: - cellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == self.categoryCollectionView{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCollectionViewCell", for: indexPath) as? CategoryCollectionViewCell
@@ -201,6 +200,7 @@ extension Page1ViewController:UICollectionViewDelegate,UICollectionViewDataSourc
         return UICollectionViewCell()
     }
     
+    // MARK: - didSelectItemAt
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         goToPage2()
     }
@@ -211,17 +211,15 @@ extension Page1ViewController:UICollectionViewDelegate,UICollectionViewDataSourc
 extension Page1ViewController:UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
         UIView.transition(with: self.dropDownMenu, duration: 0.3) {
             self.dropDownMenuHeightConstaint.constant = 0
             self.view.layoutIfNeeded()
         }
         
         return true
-
     }
     
-    
+    // MARK: - shouldChangeCharactersIn
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         self.timeStartEditing = .now
@@ -258,9 +256,9 @@ extension Page1ViewController:UITextFieldDelegate{
         return true
     }
     
+    // MARK: - didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.tabBarItem.badgeValue = "123"
     }
 
 }
@@ -268,13 +266,13 @@ extension Page1ViewController:UITextFieldDelegate{
 // MARK: - tableView
 
 extension Page1ViewController:UITableViewDelegate,UITableViewDataSource{
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchWords.count
     }
-    
+    // MARK: - cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        
         var conf = cell.defaultContentConfiguration()
         conf.text = searchWords[indexPath.row]
         conf.textProperties.color = .black
@@ -282,6 +280,4 @@ extension Page1ViewController:UITableViewDelegate,UITableViewDataSource{
         cell.backgroundColor = .clear
         return cell
     }
-    
-    
 }

@@ -61,12 +61,10 @@ class Page2ViewController: UIViewController {
         super.viewDidLoad()
         configureViews()
 
-        // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         ApiManager.loadPage2 {
             let item:Item = ApiManager.page2Items![0]
-            
             self.nameLabel.text = item.getName()
             self.descriptionLabel.text = item.getDescription()
             self.priceLabel.text = "$ " +  item.getPrice()
@@ -81,7 +79,6 @@ class Page2ViewController: UIViewController {
                 }
                 self.loadPage.isHidden = true
                 self.activityView.stopAnimating()
-            
         }
     }
     
@@ -112,12 +109,12 @@ class Page2ViewController: UIViewController {
         self.minusButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(minusItem)))
     }
     
-    // MARK: - Actions
+    // MARK: - Actions (goBack)
     
     @objc fileprivate func goBack(){
         self.navigationController?.popViewController(animated: true)
     }
-    
+    // MARK: - plusItem
     @objc fileprivate func plusItem(){
         self.numberOfItems.text = String(Int(self.numberOfItems.text!)! + 1)
         if ApiManager.page2Items?.count == 0{
@@ -126,6 +123,7 @@ class Page2ViewController: UIViewController {
         self.totalPrice.text = "$ \(String(Double(self.numberOfItems.text!)! * ApiManager.page2Items![0].getNumberPrice()))"
     }
     
+    // MARK: - minusItem
     @objc fileprivate func minusItem(){
         if Int(self.numberOfItems.text!) != 0{
             self.numberOfItems.text = String(Int(self.numberOfItems.text!)! - 1)
@@ -135,9 +133,6 @@ class Page2ViewController: UIViewController {
             self.totalPrice.text = "$ \(String(Double(self.numberOfItems.text!)! * ApiManager.page2Items![0].getNumberPrice()))"
         }
     }
-    
-    
-
 }
 
 

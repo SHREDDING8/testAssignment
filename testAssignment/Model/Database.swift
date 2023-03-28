@@ -14,7 +14,7 @@ import FirebaseStorage
 class DatabaseItems{
     let storage = Storage.storage()
     
-    
+    // MARK: - addUserToDataBase
     public func addUserToDataBase(uid:String,firstName:String,lastName:String,email:String,isGoogleUser:Bool,urlPhotoGoogle:String?){
         let ref = Database.database().reference().child("users")
         ref.child(uid).updateChildValues([
@@ -25,6 +25,7 @@ class DatabaseItems{
             "urlPhotoGoogle": urlPhotoGoogle as Any
         ])
     }
+    // MARK: - addPhotoToDatabase
     public func addPhotoToDatabase(uid:String,image:UIImage){
         let ref = storage.reference().child(uid)
         let uploadData = image.pngData()
@@ -34,6 +35,7 @@ class DatabaseItems{
             }
         }
     }
+    // MARK: - getPhotoFromDatabase
     public func getPhotoFromDatabase(uid:String, completion:@escaping ((UIImage?,Error?)->Void)){
         let ref = storage.reference().child(uid)
         ref.getData(maxSize: Int64.max) { data, error in
@@ -46,6 +48,8 @@ class DatabaseItems{
             }
         }
     }
+    
+    // MARK: - deletePhotoFromStorage
     public func deletePhotoFromStorage(uid:String){
         let ref = storage.reference().child(uid)
         ref.delete { error in
@@ -55,6 +59,7 @@ class DatabaseItems{
         }
     }
     
+    // MARK: - getUserFirstNameFromDatabase
     public func getUserFirstNameFromDatabase(uid:String, completion: @escaping ((Error?,String?)->Void)){
         let ref = Database.database().reference().child("users")
         
@@ -62,7 +67,6 @@ class DatabaseItems{
         databaseUser.child("firstname").getData { error, dataSnapshot in
             if error != nil{
                 print("DATABASE ERROR: getUserFirstNameFromDatabase")
-                print(error, StorageErrorCode(rawValue: error!._code))
                 completion(error,nil)
             }else{
                 let firstName = dataSnapshot?.value as? String ?? "Unknown"
@@ -72,7 +76,7 @@ class DatabaseItems{
         }
         
     }
-    
+    // MARK: - getUserLastNameFromDatabase
     public func getUserLastNameFromDatabase(uid:String, completion: @escaping ((Error?,String?)->Void)){
         let ref = Database.database().reference().child("users")
         
@@ -88,6 +92,7 @@ class DatabaseItems{
         }
     }
     
+    // MARK: - getIsUserGoogleFromDatabase
     public func getIsUserGoogleFromDatabase(uid:String, completion: @escaping ((Error?,Bool?)->Void)){
         let ref = Database.database().reference().child("users")
         
@@ -102,7 +107,7 @@ class DatabaseItems{
             }
         }
     }
-    
+    // MARK: - getGoogleUserPhotoFromDatabase
     public func getGoogleUserPhotoFromDatabase(uid:String, completion: @escaping ((Error?,String?)->Void)){
         let ref = Database.database().reference().child("users")
         

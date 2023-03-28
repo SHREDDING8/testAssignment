@@ -26,6 +26,7 @@ class Item{
     private var colors:[UIColor]?
     
     
+    // MARK: - Get funcs
     public func getcategory()->String{
         return self.category ?? ""
     }
@@ -63,7 +64,7 @@ class Item{
         return self.colors ?? []
     }
     
-    
+    // MARK: - init for Latest
     init(category: String, name: String, price: Int, images: [UIImage],itemCategory:ItemCategory) {
         self.category = category
         self.name = name
@@ -72,6 +73,8 @@ class Item{
         self.itemCategory = itemCategory
     }
     
+    
+    // MARK: - init for flashSale
     init(category: String, name: String, price: Double, images: [UIImage],discount:Int, itemCategory:ItemCategory){
         self.category = category
         self.name = name
@@ -81,6 +84,7 @@ class Item{
         self.discount = discount
     }
     
+    // MARK: - init for page2
     init(name: String, description: String, rating:Double, numberOfReviews:Int, price: Double, colors:[UIColor], images:[UIImage]){
         self.name = name
         self.description = description

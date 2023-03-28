@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseCore
 import FirebaseAuth
+import FirebaseDatabase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -25,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //                self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MenuUITabBarController")
 //                self.window?.makeKeyAndVisible()
         
-        
+                
         Auth.auth().addStateDidChangeListener { [self] auth, user in
             
             if user == nil{

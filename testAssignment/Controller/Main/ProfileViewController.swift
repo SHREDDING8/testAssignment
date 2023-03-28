@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseCore
 import FirebaseAuth
+import FirebaseDatabase
 
 class ProfileViewController: UIViewController {
     
@@ -45,8 +46,6 @@ class ProfileViewController: UIViewController {
         configureViews()
         configureTableView()
         configureButtonUpload()
-        
-        // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -80,7 +79,7 @@ class ProfileViewController: UIViewController {
     }
     
     
-    
+    // MARK: - configureProfile
     fileprivate func configureProfile(){
         self.name.text = AppDelegate.user.getFirstName() + " " + AppDelegate.user.getLastName()
         
@@ -134,6 +133,7 @@ class ProfileViewController: UIViewController {
        self.present(alert, animated: true)
     }
     
+    // MARK: - signOut
     func signOut() {
         let firebaseAuth = Auth.auth()
         do {
@@ -141,7 +141,7 @@ class ProfileViewController: UIViewController {
             self.tabBarController?.selectedIndex = 0
             AppDelegate.user.setIsLogin(isLogin: false)
         } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
+            print("Error signing out: %@")
         }
     }
     
@@ -158,6 +158,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource{
         return 7
     }
     
+    // MARK: - cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "profileCell")
         
@@ -181,7 +182,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource{
         return cell!
     }
     
-    
+    // MARK: - didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         

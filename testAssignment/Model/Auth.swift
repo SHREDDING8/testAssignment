@@ -103,9 +103,10 @@ class User{
         return self.isLogin
     }
     
+    
+    // MARK: - setGooglePhoto
     public func setGooglePhoto(completion: (()->Void)? = nil){
         let request = URLRequest(url: self.getphotoUrl()!)
-        
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if error != nil{
@@ -120,6 +121,7 @@ class User{
         }.resume()
     }
     
+    // MARK: - setCurrentUser
     public func setCurrentUser(completion: (()->Void)? = nil){
         guard let user = Auth.auth().currentUser else{ return }
         self.setUid(uid: user.uid)
@@ -139,7 +141,6 @@ class User{
                                     self.setphotoUrl(photoUrl: URL(string: urlString ?? ""))
                                 }
                             }
-                            
                             
                             self.storage.getPhotoFromDatabase(uid: self.getUid()) { image, error in
                                 if image != nil{
@@ -165,7 +166,7 @@ class User{
     
     
     
-    // MARK: - Create User
+    // MARK: - createUserWithEmail
     public func createUserWithEmail(completion:@escaping ((AuthDataResult?,Error?)->Void)){
         Auth.auth().createUser(withEmail: self.email!, password: self.password!) { result, error in
             if (error != nil){
@@ -178,7 +179,7 @@ class User{
         }
     }
     
-    // MARK: - Login
+    // MARK: - logIn
     
     public func logIn(completion:@escaping ((AuthDataResult?,Error?)->Void)) {
         self.setIsLogin(isLogin: true)
@@ -190,6 +191,7 @@ class User{
             }
         }
     }
+    // MARK: - logInViaGoogle
     public func logInViaGoogle(completion:@escaping ((AuthDataResult?,Error?)->Void)){
         self.setIsLogin(isLogin: true)
         Auth.auth().signIn(with: crenedtial!) { result, error in

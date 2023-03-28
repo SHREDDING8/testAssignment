@@ -9,9 +9,11 @@ import UIKit
 import GoogleSignIn
 import FirebaseCore
 import FirebaseAuth
+import FirebaseDatabase
 
 class SignInViewController: UIViewController {
     
+    // MARK: - set dark Bar style
     override var preferredStatusBarStyle:UIStatusBarStyle{
         return .darkContent
     }
@@ -39,17 +41,18 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var loadPage: UIView!
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
         configureViews()
     }
     
     // MARK: - Configuration
     
     fileprivate func configureViews(){
-    
-        
         let cornerRadius = 15.0
         setCornerRadius(views: [firstName,secondName,email,signInButton], cornerRadius: cornerRadius)
         setPlaceholder(textFields: [firstName,secondName,email], placeholders: ["First name","Last name","Email"])
@@ -58,8 +61,6 @@ class SignInViewController: UIViewController {
         let signInViaGoogleGesture = UITapGestureRecognizer(target: self, action: #selector(signInViaGoogle))
         signInWithGoogle.addGestureRecognizer(signInViaGoogleGesture)
         signInWithGoogle.isUserInteractionEnabled = true
-        
-        
         
         logIn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToLogin)))
         
@@ -81,7 +82,7 @@ class SignInViewController: UIViewController {
         }
     }
     
-    // MARK: - Navigation
+    // MARK: - Navigation (goToLogin)
     
     @objc func goToLogin(){
         let loginViewController = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
@@ -93,6 +94,7 @@ class SignInViewController: UIViewController {
         addAndShowChild(controller: loginViewController)
     }
     
+    // MARK: - signIn
     @IBAction func signIn(_ sender: Any){
         AppDelegate.user = User()
         firstName.resignFirstResponder()
@@ -140,6 +142,7 @@ class SignInViewController: UIViewController {
             }
         }
     }
+    // MARK: - goToMainPage
     public func goToMainPage(){
         
         for child in self.children{
@@ -158,22 +161,20 @@ class SignInViewController: UIViewController {
         self.activityIndicator.startAnimating()
         
         AppDelegate.user.setCurrentUser {
-                ApiManager.loadLatest {
-                        ApiManager.loadFlashSale {
-                            DispatchQueue.main.async {
-                                self.dismiss(animated: true) {
-
-                                    UIView.transition(with: self.loadPage, duration: 1,options: .transitionCrossDissolve) {
-                                            self.loadPage.layer.opacity = 0
-                                        }
-                                        self.loadPage.isHidden = true
-                                        self.activityIndicator.stopAnimating()
-                                }
-                                
+            ApiManager.loadLatest {
+                ApiManager.loadFlashSale {
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true) {
                             
+                            UIView.transition(with: self.loadPage, duration: 1,options: .transitionCrossDissolve) {
+                                self.loadPage.layer.opacity = 0
+                            }
+                            self.loadPage.isHidden = true
+                            self.activityIndicator.stopAnimating()
                         }
                     }
                 }
+            }
         }
     }
     
@@ -223,7 +224,6 @@ class SignInViewController: UIViewController {
             AppDelegate.user.setLastName(lastName: userGoogle.profile?.familyName ?? "")
             AppDelegate.user.setUserFirstName(firstName: userGoogle.profile?.givenName ?? "")
             AppDelegate.user.setCredential(credential: credential)
-            print("set: " + AppDelegate.user.getFirstName())
             AppDelegate.user.setIsUserGoogle(isUserGoogle: true)
             AppDelegate.user.setphotoUrl(photoUrl: userGoogle.profile?.imageURL(withDimension: 100))
             
@@ -245,10 +245,9 @@ class SignInViewController: UIViewController {
         alert.addAction(actionOk)
         self.present(alert, animated: true)
     }
-    
 }
 
-// MARK: -TextField Delegate
+// MARK: - TextField Delegate
 
 extension SignInViewController:UITextFieldDelegate{
     
@@ -276,6 +275,5 @@ extension SignInViewController:UITextFieldDelegate{
         }
         return false
     }
-    
 }
 
