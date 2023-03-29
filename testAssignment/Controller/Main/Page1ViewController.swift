@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Page1ViewController: UIViewController {
+class Page1ViewController: UIViewController,UIGestureRecognizerDelegate {
     
     override var preferredStatusBarStyle:UIStatusBarStyle{
         return .darkContent
@@ -71,6 +71,9 @@ class Page1ViewController: UIViewController {
     // MARK: - configuration (configureViews)
     
     fileprivate func configureViews(){
+        
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
         setCornerRadius(views: [searchField], cornerRadius: 15.0)
         setPlaceholder(textFields: [searchField], placeholders: ["What are you looking for?"])
         
@@ -100,6 +103,13 @@ class Page1ViewController: UIViewController {
         
         dropDownMenuHeightConstaint.isActive = true
 
+    }
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let navVc = navigationController {
+          return navVc.viewControllers.count > 1
+        }
+        return false
     }
     
     fileprivate func setCornerRadius(views:[UIView],cornerRadius:Double){

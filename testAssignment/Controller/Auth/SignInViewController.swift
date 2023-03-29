@@ -144,6 +144,7 @@ class SignInViewController: UIViewController {
     }
     // MARK: - goToMainPage
     public func goToMainPage(){
+        print("goToMainPage")
         
         for child in self.children{
             self.removeAndShowChild(controller: child)
